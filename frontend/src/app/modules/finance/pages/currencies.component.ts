@@ -47,47 +47,47 @@ interface Currency {
       </div>
 
       <!-- Base Currency Card -->
-      <div class="card p-6 mb-6">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-4">
-            <div class="w-14 h-14 rounded-xl bg-primary-100 flex items-center justify-center">
-              <span class="text-2xl font-bold text-primary-600">$</span>
+      <div class="card p-4 sm:p-6 mb-4 sm:mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div class="flex items-center gap-3 sm:gap-4">
+            <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl bg-primary-100 flex items-center justify-center shrink-0">
+              <span class="text-sm sm:text-xl font-bold text-primary-600">ر.ع.</span>
             </div>
             <div>
-              <div class="text-sm text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'العملة الأساسية' : 'Base Currency' }}</div>
-              <div class="text-xl font-bold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'الدولار الأمريكي (USD)' : 'US Dollar (USD)' }}</div>
+              <div class="text-xs sm:text-sm text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'العملة الأساسية' : 'Base Currency' }}</div>
+              <div class="text-base sm:text-xl font-bold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'الريال العماني (OMR)' : 'Omani Rial (OMR)' }}</div>
             </div>
           </div>
-          <div class="text-right">
-            <div class="text-sm text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'آخر تحديث' : 'Last Updated' }}</div>
-            <div class="text-sm text-gray-700">{{ lang.formatDate(lastUpdated, 'medium') }}</div>
+          <div class="text-start sm:text-end">
+            <div class="text-xs sm:text-sm text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'آخر تحديث' : 'Last Updated' }}</div>
+            <div class="text-xs sm:text-sm text-gray-700">{{ lang.formatDate(lastUpdated, 'medium') }}</div>
           </div>
         </div>
       </div>
 
       <!-- Currency Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6">
         @for (currency of currencies(); track currency.id) {
-          <div class="card p-4">
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
-                  <span class="text-lg font-semibold text-gray-700">{{ currency.symbol }}</span>
+          <div class="card p-2.5 sm:p-4">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
+                  <span class="text-sm sm:text-lg font-semibold text-gray-700">{{ currency.symbol }}</span>
                 </div>
-                <div>
-                  <div class="font-semibold text-gray-900">{{ currency.code }}</div>
-                  <div class="text-sm text-gray-500">{{ lang.currentLanguage() === 'ar' ? currency.nameAr : currency.name }}</div>
+                <div class="min-w-0">
+                  <div class="font-semibold text-sm text-gray-900">{{ currency.code }}</div>
+                  <div class="text-xs text-gray-500 truncate">{{ lang.currentLanguage() === 'ar' ? currency.nameAr : currency.name }}</div>
                 </div>
               </div>
-              <div class="text-right">
-                <div class="font-semibold text-gray-900">{{ lang.formatNumber(currency.exchangeRate, { minimumFractionDigits: 4, maximumFractionDigits: 4 }) }}</div>
-                <div class="flex items-center gap-1" [class.text-success-600]="currency.change > 0" [class.text-danger-600]="currency.change < 0" [class.text-gray-500]="currency.change === 0">
+              <div class="text-end shrink-0">
+                <div class="font-semibold text-xs sm:text-sm text-gray-900" dir="ltr">{{ lang.formatNumber(currency.exchangeRate, { minimumFractionDigits: 2, maximumFractionDigits: 4 }) }}</div>
+                <div class="flex items-center justify-end gap-0.5" [class.text-success-600]="currency.change > 0" [class.text-danger-600]="currency.change < 0" [class.text-gray-500]="currency.change === 0">
                   @if (currency.change > 0) {
-                    <ng-icon name="heroArrowTrendingUp" class="text-sm"></ng-icon>
+                    <ng-icon name="heroArrowTrendingUp" class="text-xs"></ng-icon>
                   } @else if (currency.change < 0) {
-                    <ng-icon name="heroArrowTrendingDown" class="text-sm"></ng-icon>
+                    <ng-icon name="heroArrowTrendingDown" class="text-xs"></ng-icon>
                   }
-                  <span class="text-xs font-medium">{{ currency.change > 0 ? '+' : '' }}{{ lang.formatNumber(currency.change, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}%</span>
+                  <span class="text-[10px] font-medium" dir="ltr">{{ currency.change > 0 ? '+' : '' }}{{ currency.change }}%</span>
                 </div>
               </div>
             </div>
@@ -97,10 +97,10 @@ interface Currency {
 
       <!-- Exchange Rates Table -->
       <div class="card">
-        <div class="p-4 border-b border-gray-100">
-          <h2 class="text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'أسعار الصرف' : 'Exchange Rates' }}</h2>
+        <div class="p-3 sm:p-4 border-b border-gray-100">
+          <h2 class="text-base sm:text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'أسعار الصرف' : 'Exchange Rates' }}</h2>
         </div>
-        <div class="table-container">
+        <div class="hidden md:block table-container">
           <table class="data-table">
             <thead>
               <tr>
@@ -144,14 +144,15 @@ export class CurrenciesComponent implements OnInit {
   lastUpdated = new Date();
 
   ngOnInit() {
+    // Exchange rates are per 1 OMR
     this.currencies.set([
       {
         id: '1',
-        code: 'AED',
-        name: 'UAE Dirham',
-        nameAr: 'درهم إماراتي',
-        symbol: 'د.إ',
-        exchangeRate: 3.6725,
+        code: 'USD',
+        name: 'US Dollar',
+        nameAr: 'دولار أمريكي',
+        symbol: '$',
+        exchangeRate: 2.6008,
         change: 0.00,
         lastUpdated: new Date()
       },
@@ -161,38 +162,38 @@ export class CurrenciesComponent implements OnInit {
         name: 'Saudi Riyal',
         nameAr: 'ريال سعودي',
         symbol: 'ر.س',
-        exchangeRate: 3.7500,
+        exchangeRate: 9.7500,
         change: 0.00,
         lastUpdated: new Date()
       },
       {
         id: '3',
-        code: 'EUR',
-        name: 'Euro',
-        nameAr: 'يورو',
-        symbol: '€',
-        exchangeRate: 0.9245,
-        change: -0.15,
+        code: 'AED',
+        name: 'UAE Dirham',
+        nameAr: 'درهم إماراتي',
+        symbol: 'د.إ',
+        exchangeRate: 9.5480,
+        change: 0.00,
         lastUpdated: new Date()
       },
       {
         id: '4',
-        code: 'GBP',
-        name: 'British Pound',
-        nameAr: 'جنيه إسترليني',
-        symbol: '£',
-        exchangeRate: 0.7892,
-        change: 0.08,
+        code: 'EUR',
+        name: 'Euro',
+        nameAr: 'يورو',
+        symbol: '€',
+        exchangeRate: 2.4050,
+        change: -0.15,
         lastUpdated: new Date()
       },
       {
         id: '5',
-        code: 'JPY',
-        name: 'Japanese Yen',
-        nameAr: 'ين ياباني',
-        symbol: '¥',
-        exchangeRate: 149.5200,
-        change: 0.42,
+        code: 'GBP',
+        name: 'British Pound',
+        nameAr: 'جنيه إسترليني',
+        symbol: '£',
+        exchangeRate: 2.0520,
+        change: 0.08,
         lastUpdated: new Date()
       },
       {
@@ -201,7 +202,7 @@ export class CurrenciesComponent implements OnInit {
         name: 'Indian Rupee',
         nameAr: 'روبية هندية',
         symbol: '₹',
-        exchangeRate: 83.1250,
+        exchangeRate: 216.2500,
         change: -0.12,
         lastUpdated: new Date()
       }

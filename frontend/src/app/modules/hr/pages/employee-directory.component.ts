@@ -30,9 +30,9 @@ import { Employee, Department } from '../../../core/models';
 
       <!-- Filters -->
       <div class="card mb-6">
-        <div class="p-4 flex flex-wrap items-center gap-4">
+        <div class="p-4 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 sm:items-center">
           <!-- Search -->
-          <div class="flex-1 min-w-64">
+          <div class="w-full sm:flex-1 sm:min-w-48 sm:max-w-sm">
             <div class="relative">
               <input
                 type="text"
@@ -47,36 +47,100 @@ import { Employee, Department } from '../../../core/models';
             </div>
           </div>
 
-          <!-- Department Filter -->
-          <select [(ngModel)]="selectedDepartment" (ngModelChange)="filterEmployees()" class="form-select w-48">
-            <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع الأقسام' : 'All Departments' }}</option>
-            @for (dept of departments; track dept.id) {
-              <option [value]="dept.id">{{ lang.currentLanguage() === 'ar' ? dept.nameAr : dept.name }}</option>
-            }
-          </select>
+          <!-- Filter Row -->
+          <div class="flex flex-col sm:flex-row gap-3 sm:items-center w-full sm:w-auto">
+            <!-- Department Filter -->
+            <select [(ngModel)]="selectedDepartment" (ngModelChange)="filterEmployees()" class="form-select w-full sm:w-40 md:w-48">
+              <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع الأقسام' : 'All Departments' }}</option>
+              @for (dept of departments; track dept.id) {
+                <option [value]="dept.id">{{ lang.currentLanguage() === 'ar' ? dept.nameAr : dept.name }}</option>
+              }
+            </select>
 
-          <!-- Status Filter -->
-          <select [(ngModel)]="selectedStatus" (ngModelChange)="filterEmployees()" class="form-select w-40">
-            <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع الحالات' : 'All Status' }}</option>
-            <option value="active">{{ lang.currentLanguage() === 'ar' ? 'نشط' : 'Active' }}</option>
-            <option value="on-leave">{{ lang.currentLanguage() === 'ar' ? 'في إجازة' : 'On Leave' }}</option>
-            <option value="probation">{{ lang.currentLanguage() === 'ar' ? 'فترة تجربة' : 'Probation' }}</option>
-            <option value="terminated">{{ lang.currentLanguage() === 'ar' ? 'منتهي' : 'Terminated' }}</option>
-          </select>
+            <!-- Status Filter -->
+            <select [(ngModel)]="selectedStatus" (ngModelChange)="filterEmployees()" class="form-select w-full sm:w-36 md:w-40">
+              <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع الحالات' : 'All Status' }}</option>
+              <option value="active">{{ lang.currentLanguage() === 'ar' ? 'نشط' : 'Active' }}</option>
+              <option value="on-leave">{{ lang.currentLanguage() === 'ar' ? 'في إجازة' : 'On Leave' }}</option>
+              <option value="probation">{{ lang.currentLanguage() === 'ar' ? 'فترة تجربة' : 'Probation' }}</option>
+              <option value="terminated">{{ lang.currentLanguage() === 'ar' ? 'منتهي' : 'Terminated' }}</option>
+            </select>
 
-          <!-- Export Button -->
-          <button class="btn btn-secondary">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-            </svg>
-            {{ lang.currentLanguage() === 'ar' ? 'تصدير' : 'Export' }}
-          </button>
+            <!-- Export Button -->
+            <button class="btn btn-secondary w-full sm:w-auto">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              {{ lang.currentLanguage() === 'ar' ? 'تصدير' : 'Export' }}
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Employee Table -->
+      <!-- Employee List -->
       <div class="card overflow-hidden">
-        <div class="table-container">
+        <!-- Mobile Card View -->
+        <div class="md:hidden">
+          @for (employee of filteredEmployees(); track employee.id) {
+            <div class="p-3 sm:p-4 border-b border-gray-100 last:border-b-0" (click)="viewEmployee(employee)">
+              <div class="flex items-start gap-2 sm:gap-3">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-semibold text-xs sm:text-sm shrink-0">
+                  {{ getInitials(employee) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-1 sm:gap-2">
+                    <div class="min-w-0 flex-1">
+                      <div class="font-medium text-slate-900 text-sm sm:text-base truncate">
+                        {{ lang.currentLanguage() === 'ar' && employee.firstNameAr
+                          ? employee.firstNameAr + ' ' + (employee.lastNameAr || '')
+                          : employee.firstName + ' ' + employee.lastName }}
+                      </div>
+                      <div class="text-xs sm:text-sm text-slate-500 truncate">{{ employee.workEmail }}</div>
+                    </div>
+                    <span class="badge shrink-0" [class]="getStatusBadgeClass(employee.status)">
+                      {{ getStatusLabel(employee.status) }}
+                    </span>
+                  </div>
+                  <div class="mt-1.5 sm:mt-2 flex flex-wrap gap-x-2 sm:gap-x-4 gap-y-0.5 text-xs sm:text-sm text-slate-600">
+                    <span class="truncate">{{ lang.currentLanguage() === 'ar' ? employee.departmentNameAr : employee.departmentName }}</span>
+                    <span class="text-slate-400 hidden sm:inline">•</span>
+                    <span class="truncate">{{ lang.currentLanguage() === 'ar' ? employee.positionTitleAr : employee.positionTitle }}</span>
+                  </div>
+                  <div class="mt-2 sm:mt-3 flex items-center gap-2">
+                    <a
+                      [routerLink]="['/hr/employees', employee.id]"
+                      (click)="$event.stopPropagation()"
+                      class="btn btn-sm btn-secondary flex-1 text-xs sm:text-sm"
+                    >
+                      {{ lang.currentLanguage() === 'ar' ? 'عرض' : 'View' }}
+                    </a>
+                    <button
+                      class="btn btn-sm btn-ghost"
+                      (click)="$event.stopPropagation(); editEmployee(employee)"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <div class="text-center py-12">
+              <div class="text-slate-400">
+                <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <p class="text-lg font-medium">{{ lang.currentLanguage() === 'ar' ? 'لا توجد نتائج' : 'No results found' }}</p>
+                <p class="text-sm mt-1">{{ lang.currentLanguage() === 'ar' ? 'حاول تغيير معايير البحث' : 'Try changing your search criteria' }}</p>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="hidden md:block table-container">
           <table class="data-table">
             <thead>
               <tr>
@@ -186,8 +250,8 @@ import { Employee, Department } from '../../../core/models';
         </div>
 
         <!-- Pagination -->
-        <div class="px-4 py-3 border-t border-slate-200 flex items-center justify-between">
-          <div class="text-sm text-slate-500">
+        <div class="px-4 py-3 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="text-sm text-slate-500 text-center sm:text-start">
             {{ lang.currentLanguage() === 'ar' ? 'عرض' : 'Showing' }}
             <span class="font-medium">1-{{ Math.min(filteredEmployees().length, 10) }}</span>
             {{ lang.currentLanguage() === 'ar' ? 'من' : 'of' }}
@@ -215,19 +279,19 @@ import { Employee, Department } from '../../../core/models';
         <div class="modal-overlay" (click)="showAddModal = false"></div>
         <div class="fixed inset-0 z-50 overflow-y-auto">
           <div class="flex min-h-full items-center justify-center p-4">
-            <div class="modal-content max-w-2xl" (click)="$event.stopPropagation()">
-              <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+            <div class="modal-content w-full max-w-2xl" (click)="$event.stopPropagation()">
+              <div class="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-200">
                 <h3 class="text-lg font-semibold text-slate-900">
                   {{ lang.currentLanguage() === 'ar' ? 'إضافة موظف جديد' : 'Add New Employee' }}
                 </h3>
-                <button (click)="showAddModal = false" class="p-1 text-slate-400 hover:text-slate-600">
+                <button (click)="showAddModal = false" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
-              <div class="px-6 py-5">
-                <div class="grid grid-cols-2 gap-4">
+              <div class="px-4 sm:px-6 py-5 max-h-[60vh] overflow-y-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="form-label">{{ lang.currentLanguage() === 'ar' ? 'الاسم الأول (English)' : 'First Name (English)' }} *</label>
                     <input type="text" class="form-input" placeholder="Ahmed" />
@@ -284,11 +348,11 @@ import { Employee, Department } from '../../../core/models';
                   </div>
                 </div>
               </div>
-              <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 bg-slate-50">
-                <button class="btn btn-secondary" (click)="showAddModal = false">
+              <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3 px-4 sm:px-6 py-4 border-t border-slate-200 bg-slate-50">
+                <button class="btn btn-secondary w-full sm:w-auto" (click)="showAddModal = false">
                   {{ lang.currentLanguage() === 'ar' ? 'إلغاء' : 'Cancel' }}
                 </button>
-                <button class="btn btn-primary">
+                <button class="btn btn-primary w-full sm:w-auto">
                   {{ lang.currentLanguage() === 'ar' ? 'إضافة الموظف' : 'Add Employee' }}
                 </button>
               </div>

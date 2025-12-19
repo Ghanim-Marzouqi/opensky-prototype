@@ -31,7 +31,7 @@ import {
   template: `
     <div class="min-h-screen flex" [dir]="lang.direction()">
       <!-- Left Panel - Login Form -->
-      <div class="flex-1 flex items-center justify-center p-8 bg-white">
+      <div class="flex-1 flex items-center justify-center p-4 sm:p-8 bg-white">
         <div class="w-full max-w-md">
           <!-- Sign In Header -->
           <h1 class="text-2xl font-bold text-gray-900 mb-8">
@@ -169,19 +169,19 @@ import {
       </div>
 
       <!-- Right Panel - Decorative (Prodify-style purple gradient) -->
-      <div class="hidden lg:flex lg:flex-1 items-center justify-center relative overflow-hidden" style="background: linear-gradient(135deg, #4C1D95 0%, #7C3AED 50%, #A855F7 100%);">
+      <div class="hidden md:flex md:flex-1 items-center justify-center relative overflow-hidden" style="background: linear-gradient(135deg, #4C1D95 0%, #7C3AED 50%, #A855F7 100%);">
         <!-- Grid Pattern -->
         <div class="absolute inset-0 opacity-10">
           <div class="absolute inset-0" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
         </div>
 
         <!-- Content -->
-        <div class="relative z-10 flex flex-col items-center justify-center p-12 text-center">
-          <div class="w-36 h-36 bg-white rounded-3xl flex items-center justify-center mb-6 shadow-2xl shadow-black/20">
-            <img src="assets/logo.png" alt="OpenSky" class="h-28 w-28 object-contain" />
+        <div class="relative z-10 flex flex-col items-center justify-center p-8 lg:p-12 text-center">
+          <div class="w-28 h-28 lg:w-36 lg:h-36 bg-white rounded-3xl flex items-center justify-center mb-6 shadow-2xl shadow-black/20">
+            <img src="assets/logo.png" alt="OpenSky" class="h-20 w-20 lg:h-28 lg:w-28 object-contain" />
           </div>
-          <h2 class="text-3xl font-bold text-white">OpenSky ERP</h2>
-          <p class="text-white/70 mt-2 text-lg">{{ lang.currentLanguage() === 'ar' ? 'نظام إدارة موارد المؤسسات' : 'Enterprise Resource Planning' }}</p>
+          <h2 class="text-2xl lg:text-3xl font-bold text-white">OpenSky ERP</h2>
+          <p class="text-white/70 mt-2 text-base lg:text-lg">{{ lang.currentLanguage() === 'ar' ? 'نظام إدارة موارد المؤسسات' : 'Enterprise Resource Planning' }}</p>
         </div>
 
         <!-- Decorative Circles with purple/teal tint -->

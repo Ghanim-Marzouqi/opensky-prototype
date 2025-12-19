@@ -51,8 +51,59 @@ interface Department {
         </div>
       </div>
 
-      <!-- Org Chart -->
-      <div class="card p-8 overflow-x-auto">
+      <!-- Mobile Org Chart - Vertical Cards -->
+      <div class="md:hidden space-y-4">
+        <!-- CEO Card -->
+        <div class="card p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="avatar w-14 h-14 text-lg ring-2 ring-primary-200">MS</div>
+            <div>
+              <div class="font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'محمد السعيدي' : 'Mohammed Al-Said' }}</div>
+              <div class="text-sm text-primary-600 font-medium">{{ lang.currentLanguage() === 'ar' ? 'الرئيس التنفيذي' : 'CEO' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Departments -->
+        @for (dept of departments(); track dept.id) {
+          <div class="card overflow-hidden">
+            <!-- Department Header -->
+            <div class="p-3 border-b border-gray-100" [class]="'bg-' + dept.color + '-50'">
+              <div class="flex items-center gap-3">
+                <div class="avatar w-10 h-10 text-sm" [class]="'avatar-' + dept.color">
+                  {{ getInitials(dept.name) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-semibold text-sm text-gray-900 truncate">{{ lang.currentLanguage() === 'ar' ? dept.nameAr : dept.name }}</div>
+                  <div class="text-xs text-gray-500">{{ lang.currentLanguage() === 'ar' ? dept.positionAr : dept.position }}</div>
+                </div>
+                <div class="badge text-[10px] px-2 py-0.5" [class]="'badge-' + dept.color">
+                  {{ lang.currentLanguage() === 'ar' ? dept.departmentAr : dept.department }}
+                </div>
+              </div>
+            </div>
+            <!-- Team Members -->
+            @if (dept.members.length > 0) {
+              <div class="p-2 space-y-1.5">
+                @for (member of dept.members; track member.id) {
+                  <div class="flex items-center gap-2 p-2 rounded-lg bg-gray-50">
+                    <div class="avatar w-8 h-8 text-xs" [class]="'avatar-' + dept.color">
+                      {{ getInitials(member.name) }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-sm font-medium text-gray-900 truncate">{{ lang.currentLanguage() === 'ar' ? member.nameAr : member.name }}</div>
+                      <div class="text-xs text-gray-500 truncate">{{ lang.currentLanguage() === 'ar' ? member.positionAr : member.position }}</div>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Desktop Org Chart -->
+      <div class="hidden md:block card p-4 sm:p-8 overflow-x-auto">
         <div class="org-chart-container">
           <!-- CEO Level -->
           <div class="org-level ceo-level">
@@ -60,11 +111,11 @@ interface Department {
               <div class="org-node ceo-node group">
                 <div class="node-glow"></div>
                 <div class="avatar-wrapper ceo-avatar">
-                  <div class="avatar w-20 h-20 text-2xl ring-4 ring-white shadow-lg">AK</div>
+                  <div class="avatar w-20 h-20 text-2xl ring-4 ring-white shadow-lg">MS</div>
                   <div class="status-dot"></div>
                 </div>
                 <div class="node-content">
-                  <h3 class="node-name">{{ lang.currentLanguage() === 'ar' ? 'أحمد الخليفي' : 'Ahmed Al-Khalifi' }}</h3>
+                  <h3 class="node-name">{{ lang.currentLanguage() === 'ar' ? 'محمد السعيدي' : 'Mohammed Al-Said' }}</h3>
                   <p class="node-title">{{ lang.currentLanguage() === 'ar' ? 'الرئيس التنفيذي' : 'Chief Executive Officer' }}</p>
                 </div>
               </div>
@@ -138,14 +189,14 @@ interface Department {
       </div>
 
       <!-- Department Summary Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 mt-4 sm:mt-6">
         @for (dept of departments(); track dept.id) {
           <div class="summary-card group" [class]="'summary-' + dept.color">
             <div class="summary-icon" [class]="'icon-' + dept.color">
-              <ng-icon name="heroUserGroup" class="text-xl"></ng-icon>
+              <ng-icon name="heroUserGroup" class="text-lg sm:text-xl"></ng-icon>
             </div>
-            <div class="summary-content">
-              <h4 class="summary-title">{{ lang.currentLanguage() === 'ar' ? dept.departmentAr : dept.department }}</h4>
+            <div class="summary-content min-w-0">
+              <h4 class="summary-title truncate">{{ lang.currentLanguage() === 'ar' ? dept.departmentAr : dept.department }}</h4>
               <p class="summary-count">{{ dept.members.length + 1 }} {{ lang.currentLanguage() === 'ar' ? 'موظفين' : 'employees' }}</p>
             </div>
             <div class="summary-bar" [class]="'bar-' + dept.color"></div>
@@ -160,8 +211,15 @@ interface Department {
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-width: 800px;
-      padding: 1rem;
+      min-width: 700px;
+      padding: 0.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .org-chart-container {
+        min-width: 800px;
+        padding: 1rem;
+      }
     }
 
     /* Org Levels */
@@ -310,6 +368,13 @@ interface Department {
     .badge-orange { background: linear-gradient(135deg, #F97316, #FB923C); color: white; }
     .badge-pink { background: linear-gradient(135deg, #EC4899, #F472B6); color: white; }
 
+    /* Mobile badge colors */
+    .bg-purple-50 { background-color: #FAF5FF; }
+    .bg-teal-50 { background-color: #F0FDFA; }
+    .bg-blue-50 { background-color: #EFF6FF; }
+    .bg-orange-50 { background-color: #FFF7ED; }
+    .bg-pink-50 { background-color: #FDF2F8; }
+
     /* Avatar Colors */
     .avatar-purple { background: linear-gradient(135deg, #7C3AED 0%, #A855F7 50%, #C084FC 100%); }
     .avatar-teal { background: linear-gradient(135deg, #14B8A6 0%, #2DD4BF 50%, #5EEAD4 100%); }
@@ -418,14 +483,22 @@ interface Department {
     .summary-card {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      padding: 1.25rem;
+      gap: 0.75rem;
+      padding: 0.875rem;
       background: white;
-      border-radius: 1rem;
+      border-radius: 0.75rem;
       border: 1px solid #E5E7EB;
       position: relative;
       overflow: hidden;
       transition: all 0.3s ease;
+    }
+
+    @media (min-width: 640px) {
+      .summary-card {
+        gap: 1rem;
+        padding: 1.25rem;
+        border-radius: 1rem;
+      }
     }
 
     .summary-card:hover {
@@ -434,12 +507,21 @@ interface Department {
     }
 
     .summary-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 640px) {
+      .summary-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+      }
     }
 
     .icon-purple { background: #F3E8FF; color: #7C3AED; }
@@ -454,13 +536,26 @@ interface Department {
 
     .summary-title {
       font-weight: 600;
+      font-size: 0.8rem;
       color: #111827;
       margin-bottom: 0.125rem;
     }
 
+    @media (min-width: 640px) {
+      .summary-title {
+        font-size: 1rem;
+      }
+    }
+
     .summary-count {
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       color: #6B7280;
+    }
+
+    @media (min-width: 640px) {
+      .summary-count {
+        font-size: 0.875rem;
+      }
     }
 
     .summary-bar {
@@ -493,44 +588,44 @@ export class OrgChartComponent implements OnInit {
     this.departments.set([
       {
         id: '1',
-        name: 'Sarah Johnson',
-        nameAr: 'سارة جونسون',
+        name: 'Aisha Al-Maskari',
+        nameAr: 'عائشة المسكري',
         position: 'HR Director',
         positionAr: 'مدير الموارد البشرية',
         department: 'Human Resources',
         departmentAr: 'الموارد البشرية',
         color: 'purple',
         members: [
-          { id: '1a', name: 'Mohammed Ali', nameAr: 'محمد علي', position: 'HR Specialist', positionAr: 'أخصائي موارد بشرية' },
-          { id: '1b', name: 'Fatima Hassan', nameAr: 'فاطمة حسن', position: 'Recruiter', positionAr: 'مسؤول توظيف' }
+          { id: '1a', name: 'Said Al-Rashdi', nameAr: 'سعيد الراشدي', position: 'HR Specialist', positionAr: 'أخصائي موارد بشرية' },
+          { id: '1b', name: 'Fatima Al-Harthi', nameAr: 'فاطمة الحارثي', position: 'Recruiter', positionAr: 'مسؤول توظيف' }
         ]
       },
       {
         id: '2',
-        name: 'Omar Al-Said',
-        nameAr: 'عمر السعيد',
+        name: 'Maryam Al-Lawati',
+        nameAr: 'مريم اللواتي',
         position: 'Finance Director',
         positionAr: 'المدير المالي',
         department: 'Finance',
         departmentAr: 'المالية',
         color: 'teal',
         members: [
-          { id: '2a', name: 'Layla Ahmed', nameAr: 'ليلى أحمد', position: 'Accountant', positionAr: 'محاسب' },
-          { id: '2b', name: 'Khalid Nasser', nameAr: 'خالد ناصر', position: 'Financial Analyst', positionAr: 'محلل مالي' }
+          { id: '2a', name: 'Khalid Al-Busaidi', nameAr: 'خالد البوسعيدي', position: 'Accountant', positionAr: 'محاسب' },
+          { id: '2b', name: 'Layla Al-Hinai', nameAr: 'ليلى الهنائي', position: 'Financial Analyst', positionAr: 'محلل مالي' }
         ]
       },
       {
         id: '3',
-        name: 'Nadia Al-Rashid',
-        nameAr: 'نادية الراشد',
+        name: 'Ahmed Al-Balushi',
+        nameAr: 'أحمد البلوشي',
         position: 'Operations Director',
         positionAr: 'مدير العمليات',
         department: 'Operations',
         departmentAr: 'العمليات',
         color: 'blue',
         members: [
-          { id: '3a', name: 'Yusuf Ibrahim', nameAr: 'يوسف إبراهيم', position: 'Operations Manager', positionAr: 'مدير عمليات' },
-          { id: '3b', name: 'Aisha Mahmoud', nameAr: 'عائشة محمود', position: 'Quality Analyst', positionAr: 'محلل جودة' }
+          { id: '3a', name: 'Yusuf Al-Rawahi', nameAr: 'يوسف الرواحي', position: 'Operations Manager', positionAr: 'مدير عمليات' },
+          { id: '3b', name: 'Sara Al-Kindi', nameAr: 'سارة الكندي', position: 'Quality Analyst', positionAr: 'محلل جودة' }
         ]
       }
     ]);

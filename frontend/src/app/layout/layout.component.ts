@@ -96,11 +96,23 @@ interface NavItem {
   ],
   template: `
     <div class="flex h-screen overflow-hidden bg-gray-50" [dir]="lang.direction()">
+      <!-- Mobile Overlay -->
+      @if (mobileMenuOpen()) {
+        <div
+          class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40 lg:hidden"
+          (click)="mobileMenuOpen.set(false)"
+        ></div>
+      }
+
       <!-- Sidebar - Light Prodify Style -->
       <aside
         class="sidebar transition-all duration-300"
         [class.w-64]="!sidebarCollapsed()"
         [class.w-20]="sidebarCollapsed()"
+        [class.-translate-x-full]="!mobileMenuOpen() && lang.direction() === 'ltr'"
+        [class.translate-x-full]="!mobileMenuOpen() && lang.direction() === 'rtl'"
+        [class.translate-x-0]="mobileMenuOpen()"
+        [class.lg:translate-x-0]="true"
       >
         <!-- User Profile at Top -->
         <div class="p-4 border-b border-gray-100">
@@ -215,22 +227,23 @@ interface NavItem {
 
       <!-- Main Content -->
       <div
-        class="flex-1 flex flex-col min-h-screen transition-all duration-300"
-        [class.ms-64]="!sidebarCollapsed()"
-        [class.ms-20]="sidebarCollapsed()"
+        class="flex-1 flex flex-col min-h-screen transition-all duration-300 lg:ms-64"
+        [class.lg:ms-64]="!sidebarCollapsed()"
+        [class.lg:ms-20]="sidebarCollapsed()"
       >
         <!-- Header - Clean Prodify Style -->
         <header
-          class="fixed top-0 z-20 h-14 bg-white border-b border-gray-100 flex items-center px-6 gap-4 transition-all duration-300"
-          [class.left-64]="!sidebarCollapsed() && lang.direction() === 'ltr'"
-          [class.left-20]="sidebarCollapsed() && lang.direction() === 'ltr'"
-          [class.right-0]="lang.direction() === 'ltr'"
-          [class.right-64]="!sidebarCollapsed() && lang.direction() === 'rtl'"
-          [class.right-20]="sidebarCollapsed() && lang.direction() === 'rtl'"
-          [class.left-0]="lang.direction() === 'rtl'"
+          class="fixed top-0 left-0 right-0 z-20 h-14 bg-white border-b border-gray-100 flex items-center px-4 sm:px-6 gap-2 sm:gap-4 transition-all duration-300"
+          [class.lg:left-64]="!sidebarCollapsed() && lang.direction() === 'ltr'"
+          [class.lg:left-20]="sidebarCollapsed() && lang.direction() === 'ltr'"
+          [class.lg:right-64]="!sidebarCollapsed() && lang.direction() === 'rtl'"
+          [class.lg:right-20]="sidebarCollapsed() && lang.direction() === 'rtl'"
         >
-          <!-- Mobile Menu -->
-          <button class="lg:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-xl">
+          <!-- Mobile Menu Toggle -->
+          <button
+            (click)="toggleMobileMenu()"
+            class="lg:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-xl"
+          >
             <ng-icon name="heroBars3" class="text-xl"></ng-icon>
           </button>
 
@@ -246,11 +259,11 @@ interface NavItem {
           <!-- Right Actions -->
           <div class="flex items-center gap-2">
             <!-- Search -->
-            <div class="relative hidden sm:block">
+            <div class="relative hidden md:block">
               <input
                 type="text"
                 [placeholder]="lang.currentLanguage() === 'ar' ? 'بحث...' : 'Search...'"
-                class="w-48 h-10 ps-10 pe-4 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 focus:bg-white transition-all"
+                class="w-40 lg:w-48 h-10 ps-10 pe-4 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 focus:bg-white transition-all"
               />
               <ng-icon name="heroMagnifyingGlass" class="absolute start-3 top-2.5 text-gray-400"></ng-icon>
             </div>
@@ -258,10 +271,10 @@ interface NavItem {
             <!-- Language Toggle -->
             <button
               (click)="lang.toggleLanguage()"
-              class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all"
+              class="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all"
             >
               <ng-icon name="heroGlobeAlt" class="text-lg"></ng-icon>
-              <span>{{ lang.currentLanguage() === 'ar' ? 'EN' : 'AR' }}</span>
+              <span class="hidden sm:inline">{{ lang.currentLanguage() === 'ar' ? 'EN' : 'AR' }}</span>
             </button>
 
             <!-- Notifications -->
@@ -311,7 +324,7 @@ interface NavItem {
         </header>
 
         <!-- Page Content - Light Background -->
-        <main class="flex-1 overflow-auto p-6 mt-14" style="background-color: #F7F8FA;">
+        <main class="flex-1 overflow-auto p-4 sm:p-6 mt-14" style="background-color: #F7F8FA;">
           <router-outlet></router-outlet>
         </main>
       </div>
@@ -331,6 +344,7 @@ export class LayoutComponent {
 
   sidebarCollapsed = signal(false);
   userMenuOpen = signal(false);
+  mobileMenuOpen = signal(false);
 
   // Current date for header display - Prodify style
   // Always use English (Latin) numerals even for Arabic
@@ -417,6 +431,7 @@ export class LayoutComponent {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.userMenuOpen.set(false);
+      this.mobileMenuOpen.set(false);
     });
   }
 
@@ -430,6 +445,14 @@ export class LayoutComponent {
 
   toggleUserMenu() {
     this.userMenuOpen.update(v => !v);
+  }
+
+  toggleMobileMenu() {
+    this.mobileMenuOpen.update(v => !v);
+  }
+
+  closeMobileMenu() {
+    this.mobileMenuOpen.set(false);
   }
 
   logout() {

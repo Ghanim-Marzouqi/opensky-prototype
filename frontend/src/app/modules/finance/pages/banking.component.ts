@@ -60,63 +60,91 @@ interface Transaction {
       </div>
 
       <!-- Bank Account Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
         @for (account of bankAccounts(); track account.id) {
-          <div class="card p-5">
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center">
-                  <ng-icon name="heroBuildingLibrary" class="text-xl text-primary-600"></ng-icon>
-                </div>
-                <div>
-                  <div class="font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? account.bankNameAr : account.bankName }}</div>
-                  <div class="text-sm text-gray-500">{{ lang.currentLanguage() === 'ar' ? account.accountTypeAr : account.accountType }}</div>
-                </div>
+          <div class="card p-3 sm:p-5">
+            <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+              <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-primary-100 flex items-center justify-center shrink-0">
+                <ng-icon name="heroBuildingLibrary" class="text-lg sm:text-xl text-primary-600"></ng-icon>
+              </div>
+              <div class="min-w-0">
+                <div class="font-semibold text-sm sm:text-base text-gray-900 truncate">{{ lang.currentLanguage() === 'ar' ? account.bankNameAr : account.bankName }}</div>
+                <div class="text-xs sm:text-sm text-gray-500">{{ lang.currentLanguage() === 'ar' ? account.accountTypeAr : account.accountType }}</div>
               </div>
             </div>
-            <div class="mb-3">
-              <div class="text-sm text-gray-500 mb-1">{{ lang.currentLanguage() === 'ar' ? 'رقم الحساب' : 'Account Number' }}</div>
-              <div class="font-mono text-sm text-gray-700" dir="ltr">{{ account.accountNumber }}</div>
+            <div class="mb-2 sm:mb-3">
+              <div class="text-xs sm:text-sm text-gray-500 mb-0.5">{{ lang.currentLanguage() === 'ar' ? 'رقم الحساب' : 'Account Number' }}</div>
+              <div class="font-mono text-xs sm:text-sm text-gray-700" dir="ltr">{{ account.accountNumber }}</div>
             </div>
-            <div class="pt-3 border-t border-gray-100">
-              <div class="text-sm text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'الرصيد الحالي' : 'Current Balance' }}</div>
-              <div class="text-xl font-bold text-gray-900">{{ lang.formatCurrency(account.balance) }}</div>
+            <div class="pt-2 sm:pt-3 border-t border-gray-100">
+              <div class="text-xs sm:text-sm text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'الرصيد الحالي' : 'Current Balance' }}</div>
+              <div class="text-base sm:text-xl font-bold text-gray-900">{{ lang.formatCurrency(account.balance) }}</div>
             </div>
           </div>
         }
       </div>
 
       <!-- Total Balance Summary -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="grid grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6">
         <div class="stat-card">
           <div class="stat-card-icon bg-primary-100 text-primary-600">
-            <ng-icon name="heroBuildingLibrary" class="text-xl"></ng-icon>
+            <ng-icon name="heroBuildingLibrary" class="text-lg sm:text-xl"></ng-icon>
           </div>
-          <div class="stat-card-value">{{ lang.formatCurrency(totalBalance()) }}</div>
-          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'إجمالي الأرصدة' : 'Total Balance' }}</div>
+          <div class="stat-card-value text-xs sm:text-base truncate">{{ lang.formatCurrency(totalBalance()) }}</div>
+          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'الإجمالي' : 'Total' }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-icon bg-success-100 text-success-600">
-            <ng-icon name="heroArrowDownLeft" class="text-xl"></ng-icon>
+            <ng-icon name="heroArrowDownLeft" class="text-lg sm:text-xl"></ng-icon>
           </div>
-          <div class="stat-card-value">{{ lang.formatCurrency(125000) }}</div>
-          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'الإيداعات (هذا الشهر)' : 'Deposits (This Month)' }}</div>
+          <div class="stat-card-value text-xs sm:text-base truncate">{{ lang.formatCurrency(125000) }}</div>
+          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'إيداعات' : 'Deposits' }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-icon bg-danger-100 text-danger-600">
-            <ng-icon name="heroArrowUpRight" class="text-xl"></ng-icon>
+            <ng-icon name="heroArrowUpRight" class="text-lg sm:text-xl"></ng-icon>
           </div>
-          <div class="stat-card-value">{{ lang.formatCurrency(85000) }}</div>
-          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'المسحوبات (هذا الشهر)' : 'Withdrawals (This Month)' }}</div>
+          <div class="stat-card-value text-xs sm:text-base truncate">{{ lang.formatCurrency(85000) }}</div>
+          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'مسحوبات' : 'Withdrawals' }}</div>
         </div>
       </div>
 
       <!-- Recent Transactions -->
       <div class="card">
-        <div class="p-4 border-b border-gray-100">
-          <h2 class="text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'المعاملات الأخيرة' : 'Recent Transactions' }}</h2>
+        <div class="p-3 sm:p-4 border-b border-gray-100">
+          <h2 class="text-base sm:text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'المعاملات الأخيرة' : 'Recent Transactions' }}</h2>
         </div>
-        <div class="table-container">
+
+        <!-- Mobile Card View -->
+        <div class="md:hidden">
+          @for (tx of transactions(); track tx.id) {
+            <div class="p-3 sm:p-4 border-b border-gray-100 last:border-b-0">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="min-w-0 flex-1">
+                  <div class="font-medium text-sm text-gray-900 truncate">{{ lang.currentLanguage() === 'ar' ? tx.descriptionAr : tx.description }}</div>
+                  <div class="text-xs text-gray-500">{{ tx.account }}</div>
+                </div>
+                <span class="flex items-center gap-0.5 shrink-0 font-semibold text-sm" [class.text-success-600]="tx.type === 'credit'" [class.text-danger-600]="tx.type === 'debit'">
+                  @if (tx.type === 'credit') {
+                    <ng-icon name="heroArrowDownLeft" class="text-xs"></ng-icon>
+                    +
+                  } @else {
+                    <ng-icon name="heroArrowUpRight" class="text-xs"></ng-icon>
+                    -
+                  }
+                  {{ lang.formatCurrency(tx.amount) }}
+                </span>
+              </div>
+              <div class="flex items-center justify-between text-xs text-gray-500">
+                <span>{{ lang.formatDate(tx.date, 'short') }}</span>
+                <span class="font-medium text-gray-700">{{ lang.currentLanguage() === 'ar' ? 'الرصيد:' : 'Bal:' }} {{ lang.formatCurrency(tx.balance) }}</span>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="hidden md:block table-container">
           <table class="data-table">
             <thead>
               <tr>
@@ -169,33 +197,33 @@ export class BankingComponent implements OnInit {
     this.bankAccounts.set([
       {
         id: '1',
-        bankName: 'Emirates NBD',
-        bankNameAr: 'بنك الإمارات دبي الوطني',
+        bankName: 'Bank Muscat',
+        bankNameAr: 'بنك مسقط',
         accountNumber: '****4521',
         accountType: 'Business Current',
         accountTypeAr: 'حساب جاري تجاري',
-        balance: 285000,
-        currency: 'AED'
+        balance: 89350.500,
+        currency: 'OMR'
       },
       {
         id: '2',
-        bankName: 'ADCB',
-        bankNameAr: 'بنك أبوظبي التجاري',
+        bankName: 'Bank Dhofar',
+        bankNameAr: 'بنك ظفار',
         accountNumber: '****7832',
         accountType: 'Savings Account',
         accountTypeAr: 'حساب توفير',
-        balance: 150000,
-        currency: 'AED'
+        balance: 45200.000,
+        currency: 'OMR'
       },
       {
         id: '3',
-        bankName: 'FAB',
-        bankNameAr: 'بنك أبوظبي الأول',
+        bankName: 'NBO',
+        bankNameAr: 'البنك الوطني العماني',
         accountNumber: '****1294',
         accountType: 'Business Current',
         accountTypeAr: 'حساب جاري تجاري',
-        balance: 95000,
-        currency: 'AED'
+        balance: 32150.750,
+        currency: 'OMR'
       }
     ]);
 
@@ -206,9 +234,9 @@ export class BankingComponent implements OnInit {
         description: 'Payment received - Invoice INV-2024-001',
         descriptionAr: 'دفعة مستلمة - فاتورة INV-2024-001',
         type: 'credit',
-        amount: 15000,
-        balance: 285000,
-        account: 'Emirates NBD'
+        amount: 5197.500,
+        balance: 89350.500,
+        account: 'Bank Muscat'
       },
       {
         id: '2',
@@ -216,9 +244,9 @@ export class BankingComponent implements OnInit {
         description: 'Vendor payment - Office Supplies Co.',
         descriptionAr: 'دفعة للمورد - شركة مستلزمات المكاتب',
         type: 'debit',
-        amount: 5500,
-        balance: 270000,
-        account: 'Emirates NBD'
+        amount: 1850.000,
+        balance: 84153.000,
+        account: 'Bank Muscat'
       },
       {
         id: '3',
@@ -226,9 +254,9 @@ export class BankingComponent implements OnInit {
         description: 'Salary payments - December 2024',
         descriptionAr: 'رواتب - ديسمبر 2024',
         type: 'debit',
-        amount: 45000,
-        balance: 275500,
-        account: 'ADCB'
+        amount: 12500.000,
+        balance: 86003.000,
+        account: 'Bank Dhofar'
       },
       {
         id: '4',
@@ -236,9 +264,9 @@ export class BankingComponent implements OnInit {
         description: 'Payment received - Invoice INV-2024-002',
         descriptionAr: 'دفعة مستلمة - فاتورة INV-2024-002',
         type: 'credit',
-        amount: 28500,
-        balance: 320500,
-        account: 'Emirates NBD'
+        amount: 3750.000,
+        balance: 98503.000,
+        account: 'Bank Muscat'
       },
       {
         id: '5',
@@ -246,9 +274,9 @@ export class BankingComponent implements OnInit {
         description: 'Utility bills payment',
         descriptionAr: 'دفع فواتير المرافق',
         type: 'debit',
-        amount: 3200,
-        balance: 292000,
-        account: 'FAB'
+        amount: 425.500,
+        balance: 94753.000,
+        account: 'NBO'
       }
     ]);
   }

@@ -39,36 +39,36 @@ interface CalendarDay {
       <!-- Calendar Card -->
       <div class="card">
         <!-- Calendar Header -->
-        <div class="flex items-center justify-between p-4 border-b border-gray-100">
+        <div class="flex items-center justify-between p-3 sm:p-4 border-b border-gray-100">
           <button (click)="previousMonth()" class="btn btn-ghost btn-icon">
             <ng-icon name="heroChevronLeft" class="text-lg flip-rtl"></ng-icon>
           </button>
-          <h2 class="text-lg font-semibold text-gray-900">{{ currentMonthYear }}</h2>
+          <h2 class="text-sm sm:text-lg font-semibold text-gray-900 text-center">{{ currentMonthYear }}</h2>
           <button (click)="nextMonth()" class="btn btn-ghost btn-icon">
             <ng-icon name="heroChevronRight" class="text-lg flip-rtl"></ng-icon>
           </button>
         </div>
 
         <!-- Calendar Grid -->
-        <div class="p-4">
+        <div class="p-2 sm:p-4">
           <!-- Weekday Headers -->
-          <div class="grid grid-cols-7 gap-1 mb-2">
+          <div class="grid grid-cols-7 gap-0.5 sm:gap-1 mb-1 sm:mb-2">
             @for (day of weekDays; track day) {
-              <div class="text-center text-sm font-medium text-gray-500 py-2">{{ day }}</div>
+              <div class="text-center text-[10px] sm:text-sm font-medium text-gray-500 py-1 sm:py-2">{{ day }}</div>
             }
           </div>
 
           <!-- Calendar Days -->
-          <div class="grid grid-cols-7 gap-1">
+          <div class="grid grid-cols-7 gap-0.5 sm:gap-1">
             @for (day of calendarDays(); track $index) {
               <div
-                class="min-h-[100px] p-2 border border-gray-100 rounded-lg"
+                class="min-h-[50px] sm:min-h-[100px] p-1 sm:p-2 border border-gray-100 rounded"
                 [class.bg-gray-50]="!day.isCurrentMonth"
                 [class.bg-primary-50]="day.isToday"
                 [class.border-primary-200]="day.isToday"
               >
                 <div
-                  class="text-sm font-medium mb-1"
+                  class="text-[10px] sm:text-sm font-medium mb-0.5 sm:mb-1"
                   [class.text-gray-400]="!day.isCurrentMonth"
                   [class.text-primary-600]="day.isToday"
                   [class.text-gray-900]="day.isCurrentMonth && !day.isToday"
@@ -76,8 +76,9 @@ interface CalendarDay {
                   {{ day.date }}
                 </div>
                 @for (leave of day.leaves; track leave.name) {
-                  <div class="text-xs p-1 rounded mb-1" [class]="getLeaveTypeClass(leave.type)">
-                    {{ lang.currentLanguage() === 'ar' ? leave.nameAr : leave.name }}
+                  <div class="text-[8px] sm:text-xs p-0.5 sm:p-1 rounded mb-0.5 sm:mb-1 truncate" [class]="getLeaveTypeClass(leave.type)">
+                    <span class="hidden sm:inline">{{ lang.currentLanguage() === 'ar' ? leave.nameAr : leave.name }}</span>
+                    <span class="sm:hidden">{{ (lang.currentLanguage() === 'ar' ? leave.nameAr : leave.name).charAt(0) }}</span>
                   </div>
                 }
               </div>
@@ -86,19 +87,19 @@ interface CalendarDay {
         </div>
 
         <!-- Legend -->
-        <div class="flex items-center gap-4 p-4 border-t border-gray-100">
-          <span class="text-sm text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'الأنواع:' : 'Types:' }}</span>
-          <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded bg-success-100"></span>
-            <span class="text-sm text-gray-600">{{ lang.currentLanguage() === 'ar' ? 'إجازة سنوية' : 'Annual' }}</span>
+        <div class="flex flex-wrap items-center gap-2 sm:gap-4 p-3 sm:p-4 border-t border-gray-100">
+          <span class="text-xs sm:text-sm text-gray-500 w-full sm:w-auto">{{ lang.currentLanguage() === 'ar' ? 'الأنواع:' : 'Types:' }}</span>
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded bg-success-100"></span>
+            <span class="text-xs sm:text-sm text-gray-600">{{ lang.currentLanguage() === 'ar' ? 'سنوية' : 'Annual' }}</span>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded bg-warning-100"></span>
-            <span class="text-sm text-gray-600">{{ lang.currentLanguage() === 'ar' ? 'إجازة مرضية' : 'Sick' }}</span>
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded bg-warning-100"></span>
+            <span class="text-xs sm:text-sm text-gray-600">{{ lang.currentLanguage() === 'ar' ? 'مرضية' : 'Sick' }}</span>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded bg-danger-100"></span>
-            <span class="text-sm text-gray-600">{{ lang.currentLanguage() === 'ar' ? 'إجازة طارئة' : 'Emergency' }}</span>
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded bg-danger-100"></span>
+            <span class="text-xs sm:text-sm text-gray-600">{{ lang.currentLanguage() === 'ar' ? 'طارئة' : 'Emergency' }}</span>
           </div>
         </div>
       </div>

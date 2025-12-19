@@ -43,36 +43,81 @@ interface LeaveBalance {
       </div>
 
       <!-- Summary Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6">
         <div class="stat-card">
           <div class="stat-card-icon bg-success-100 text-success-600">
-            <ng-icon name="heroCalendarDays" class="text-xl"></ng-icon>
+            <ng-icon name="heroCalendarDays" class="text-lg sm:text-xl"></ng-icon>
           </div>
           <div class="stat-card-value">{{ lang.formatNumber(156) }}</div>
-          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'إجمالي الإجازات السنوية' : 'Total Annual Leave' }}</div>
+          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'إجمالي السنوية' : 'Total Annual' }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-icon bg-warning-100 text-warning-600">
-            <ng-icon name="heroCalendarDays" class="text-xl"></ng-icon>
+            <ng-icon name="heroCalendarDays" class="text-lg sm:text-xl"></ng-icon>
           </div>
           <div class="stat-card-value">{{ lang.formatNumber(42) }}</div>
-          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'الإجازات المستخدمة' : 'Used Leave Days' }}</div>
+          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'المستخدمة' : 'Used Days' }}</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card col-span-2 md:col-span-1">
           <div class="stat-card-icon bg-primary-100 text-primary-600">
-            <ng-icon name="heroCalendarDays" class="text-xl"></ng-icon>
+            <ng-icon name="heroCalendarDays" class="text-lg sm:text-xl"></ng-icon>
           </div>
           <div class="stat-card-value">{{ lang.formatNumber(114) }}</div>
-          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'الأيام المتبقية' : 'Remaining Days' }}</div>
+          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'الأيام المتبقية' : 'Remaining' }}</div>
         </div>
       </div>
 
       <!-- Leave Balances Table -->
       <div class="card">
-        <div class="p-4 border-b border-gray-100">
-          <h2 class="text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'أرصدة الموظفين' : 'Employee Balances' }}</h2>
+        <div class="p-3 sm:p-4 border-b border-gray-100">
+          <h2 class="text-base sm:text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'أرصدة الموظفين' : 'Employee Balances' }}</h2>
         </div>
-        <div class="table-container">
+
+        <!-- Mobile Card View -->
+        <div class="md:hidden">
+          @for (balance of leaveBalances(); track balance.id) {
+            <div class="p-3 sm:p-4 border-b border-gray-100 last:border-b-0">
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <div class="font-medium text-sm text-gray-900">{{ lang.currentLanguage() === 'ar' ? balance.employeeNameAr : balance.employeeName }}</div>
+                  <div class="text-xs text-gray-500">{{ lang.currentLanguage() === 'ar' ? balance.departmentAr : balance.department }}</div>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'سنوية' : 'Annual' }}</span>
+                  <div class="flex items-center gap-2">
+                    <div class="progress-bar w-16">
+                      <div class="progress-bar-fill bg-success-500" [style.width.%]="(balance.annual.used / balance.annual.total) * 100"></div>
+                    </div>
+                    <span class="text-xs text-gray-600 w-12 text-end">{{ balance.annual.used }}/{{ balance.annual.total }}</span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'مرضية' : 'Sick' }}</span>
+                  <div class="flex items-center gap-2">
+                    <div class="progress-bar w-16">
+                      <div class="progress-bar-fill bg-warning-500" [style.width.%]="(balance.sick.used / balance.sick.total) * 100"></div>
+                    </div>
+                    <span class="text-xs text-gray-600 w-12 text-end">{{ balance.sick.used }}/{{ balance.sick.total }}</span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'طارئة' : 'Emergency' }}</span>
+                  <div class="flex items-center gap-2">
+                    <div class="progress-bar w-16">
+                      <div class="progress-bar-fill bg-danger-500" [style.width.%]="(balance.emergency.used / balance.emergency.total) * 100"></div>
+                    </div>
+                    <span class="text-xs text-gray-600 w-12 text-end">{{ balance.emergency.used }}/{{ balance.emergency.total }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="hidden md:block table-container">
           <table class="data-table">
             <thead>
               <tr>

@@ -29,7 +29,7 @@ import { Invoice, Customer } from '../../../core/models';
       </div>
 
       <!-- Stats Summary -->
-      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
         <div class="stat-card">
           <div class="text-2xl font-bold text-slate-900">{{ openCount() }}</div>
           <div class="text-sm text-slate-500">{{ lang.currentLanguage() === 'ar' ? 'مفتوحة' : 'Open' }}</div>
@@ -54,8 +54,8 @@ import { Invoice, Customer } from '../../../core/models';
 
       <!-- Filters -->
       <div class="card mb-6">
-        <div class="p-4 flex flex-wrap items-center gap-4">
-          <div class="flex-1 min-w-64">
+        <div class="p-4 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 sm:items-center">
+          <div class="w-full sm:flex-1 sm:min-w-48 sm:max-w-sm">
             <div class="relative">
               <input
                 type="text"
@@ -69,32 +69,78 @@ import { Invoice, Customer } from '../../../core/models';
               </svg>
             </div>
           </div>
-          <select [(ngModel)]="customerFilter" (ngModelChange)="filterInvoices()" class="form-select w-48">
-            <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع العملاء' : 'All Customers' }}</option>
-            @for (customer of customers; track customer.id) {
-              <option [value]="customer.id">{{ lang.currentLanguage() === 'ar' && customer.nameAr ? customer.nameAr : customer.name }}</option>
-            }
-          </select>
-          <select [(ngModel)]="statusFilter" (ngModelChange)="filterInvoices()" class="form-select w-40">
-            <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع الحالات' : 'All Status' }}</option>
-            <option value="draft">{{ lang.currentLanguage() === 'ar' ? 'مسودة' : 'Draft' }}</option>
-            <option value="open">{{ lang.currentLanguage() === 'ar' ? 'مفتوحة' : 'Open' }}</option>
-            <option value="partial">{{ lang.currentLanguage() === 'ar' ? 'جزئية' : 'Partial' }}</option>
-            <option value="paid">{{ lang.currentLanguage() === 'ar' ? 'مدفوعة' : 'Paid' }}</option>
-            <option value="overdue">{{ lang.currentLanguage() === 'ar' ? 'متأخرة' : 'Overdue' }}</option>
-          </select>
-          <button class="btn btn-secondary">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-            </svg>
-            {{ lang.currentLanguage() === 'ar' ? 'تصدير' : 'Export' }}
-          </button>
+          <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <select [(ngModel)]="customerFilter" (ngModelChange)="filterInvoices()" class="form-select w-full sm:w-40 md:w-48">
+              <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع العملاء' : 'All Customers' }}</option>
+              @for (customer of customers; track customer.id) {
+                <option [value]="customer.id">{{ lang.currentLanguage() === 'ar' && customer.nameAr ? customer.nameAr : customer.name }}</option>
+              }
+            </select>
+            <select [(ngModel)]="statusFilter" (ngModelChange)="filterInvoices()" class="form-select w-full sm:w-36 md:w-40">
+              <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع الحالات' : 'All Status' }}</option>
+              <option value="draft">{{ lang.currentLanguage() === 'ar' ? 'مسودة' : 'Draft' }}</option>
+              <option value="open">{{ lang.currentLanguage() === 'ar' ? 'مفتوحة' : 'Open' }}</option>
+              <option value="partial">{{ lang.currentLanguage() === 'ar' ? 'جزئية' : 'Partial' }}</option>
+              <option value="paid">{{ lang.currentLanguage() === 'ar' ? 'مدفوعة' : 'Paid' }}</option>
+              <option value="overdue">{{ lang.currentLanguage() === 'ar' ? 'متأخرة' : 'Overdue' }}</option>
+            </select>
+            <button class="btn btn-secondary w-full sm:w-auto">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              {{ lang.currentLanguage() === 'ar' ? 'تصدير' : 'Export' }}
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- Invoice Table -->
       <div class="card overflow-hidden">
-        <div class="table-container">
+        <!-- Mobile Card View -->
+        <div class="md:hidden">
+          @for (invoice of filteredInvoices(); track invoice.id) {
+            <div class="p-4 border-b border-gray-100 last:border-b-0" (click)="viewInvoice(invoice)">
+              <div class="flex items-start justify-between gap-3 mb-2">
+                <div>
+                  <span class="font-mono font-medium text-slate-900">{{ invoice.invoiceNumber }}</span>
+                  <div class="text-sm text-slate-600 mt-0.5">{{ invoice.customerName }}</div>
+                </div>
+                <span class="badge shrink-0" [class]="getStatusBadgeClass(invoice.status)">
+                  {{ getStatusLabel(invoice.status) }}
+                </span>
+              </div>
+              <div class="flex items-center justify-between text-sm mb-2">
+                <span class="text-slate-500">{{ lang.formatDate(invoice.invoiceDate) }}</span>
+                <span class="font-semibold text-slate-900">{{ invoice.currencyCode }} {{ lang.formatNumber(invoice.totalAmount) }}</span>
+              </div>
+              @if (isOverdue(invoice)) {
+                <div class="text-xs text-red-600 mb-2">⚠️ {{ getDaysOverdue(invoice) }} {{ lang.currentLanguage() === 'ar' ? 'يوم تأخير' : 'days overdue' }}</div>
+              }
+              <div class="flex items-center gap-2 pt-2 border-t border-gray-100">
+                <button (click)="$event.stopPropagation(); viewInvoice(invoice)" class="btn btn-sm btn-secondary flex-1">
+                  {{ lang.currentLanguage() === 'ar' ? 'عرض' : 'View' }}
+                </button>
+                @if (invoice.status !== 'paid' && invoice.status !== 'cancelled') {
+                  <button (click)="$event.stopPropagation(); recordPayment(invoice)" class="btn btn-sm btn-success flex-1">
+                    {{ lang.currentLanguage() === 'ar' ? 'تسجيل دفعة' : 'Payment' }}
+                  </button>
+                }
+              </div>
+            </div>
+          } @empty {
+            <div class="text-center py-12">
+              <div class="text-slate-400">
+                <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <p class="text-lg font-medium">{{ lang.currentLanguage() === 'ar' ? 'لا توجد فواتير' : 'No invoices found' }}</p>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="hidden md:block table-container">
           <table class="data-table">
             <thead>
               <tr>
@@ -191,14 +237,13 @@ import { Invoice, Customer } from '../../../core/models';
         </div>
 
         <!-- Summary Footer -->
-        <div class="px-4 py-3 border-t border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-4">
-          <div class="text-sm text-slate-500">
-            {{ lang.currentLanguage() === 'ar' ? 'الملخص:' : 'Summary:' }}
+        <div class="px-4 py-3 border-t border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="text-sm text-slate-500 text-center sm:text-start">
+            <span class="hidden sm:inline">{{ lang.currentLanguage() === 'ar' ? 'الملخص:' : 'Summary:' }}</span>
             <span class="font-medium text-slate-700">{{ openCount() }} {{ lang.currentLanguage() === 'ar' ? 'مفتوحة' : 'Open' }}</span>
-            ({{ lang.formatCurrency(openAmount()) }})
-            |
+            <span class="hidden sm:inline">({{ lang.formatCurrency(openAmount()) }})</span>
+            <span class="mx-1">|</span>
             <span class="font-medium text-amber-600">{{ overdueCount() }} {{ lang.currentLanguage() === 'ar' ? 'متأخرة' : 'Overdue' }}</span>
-            ({{ lang.formatCurrency(overdueAmount()) }})
           </div>
           <div class="flex items-center gap-2">
             <button class="btn btn-sm btn-secondary" disabled>
@@ -232,8 +277,8 @@ import { Invoice, Customer } from '../../../core/models';
                   </svg>
                 </button>
               </div>
-              <div class="px-6 py-5 space-y-4 max-h-[70vh] overflow-y-auto">
-                <div class="grid grid-cols-2 gap-4">
+              <div class="px-4 sm:px-6 py-5 space-y-4 max-h-[60vh] overflow-y-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="form-label">{{ lang.currentLanguage() === 'ar' ? 'العميل' : 'Customer' }} *</label>
                     <select class="form-select">
@@ -332,14 +377,14 @@ import { Invoice, Customer } from '../../../core/models';
                   <textarea class="form-input" rows="2" [placeholder]="lang.currentLanguage() === 'ar' ? 'ملاحظات إضافية...' : 'Additional notes...'"></textarea>
                 </div>
               </div>
-              <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 bg-slate-50">
-                <button class="btn btn-secondary" (click)="showNewInvoiceModal = false">
-                  {{ lang.currentLanguage() === 'ar' ? 'حفظ كمسودة' : 'Save as Draft' }}
-                </button>
-                <button class="btn btn-secondary" (click)="showNewInvoiceModal = false">
+              <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3 px-4 sm:px-6 py-4 border-t border-slate-200 bg-slate-50">
+                <button class="btn btn-secondary w-full sm:w-auto" (click)="showNewInvoiceModal = false">
                   {{ lang.currentLanguage() === 'ar' ? 'إلغاء' : 'Cancel' }}
                 </button>
-                <button class="btn btn-primary">
+                <button class="btn btn-secondary w-full sm:w-auto" (click)="showNewInvoiceModal = false">
+                  {{ lang.currentLanguage() === 'ar' ? 'حفظ كمسودة' : 'Save as Draft' }}
+                </button>
+                <button class="btn btn-primary w-full sm:w-auto">
                   {{ lang.currentLanguage() === 'ar' ? 'حفظ وإرسال' : 'Save & Send' }}
                 </button>
               </div>

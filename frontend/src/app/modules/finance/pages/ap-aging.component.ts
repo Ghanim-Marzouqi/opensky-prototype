@@ -42,43 +42,82 @@ interface APAgingRecord {
       </div>
 
       <!-- Summary Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
         <div class="stat-card">
           <div class="stat-card-icon bg-success-100 text-success-600">
-            <ng-icon name="heroDocumentText" class="text-xl"></ng-icon>
+            <ng-icon name="heroDocumentText" class="text-lg sm:text-xl"></ng-icon>
           </div>
-          <div class="stat-card-value">{{ lang.formatCurrency(52000) }}</div>
+          <div class="stat-card-value truncate">{{ lang.formatCurrency(52000) }}</div>
           <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'جاري' : 'Current' }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-icon bg-warning-100 text-warning-600">
-            <ng-icon name="heroClock" class="text-xl"></ng-icon>
+            <ng-icon name="heroClock" class="text-lg sm:text-xl"></ng-icon>
           </div>
-          <div class="stat-card-value">{{ lang.formatCurrency(28000) }}</div>
+          <div class="stat-card-value truncate">{{ lang.formatCurrency(28000) }}</div>
           <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? '1-30 يوم' : '1-30 Days' }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-icon bg-orange-100 text-orange-600">
-            <ng-icon name="heroClock" class="text-xl"></ng-icon>
+            <ng-icon name="heroClock" class="text-lg sm:text-xl"></ng-icon>
           </div>
-          <div class="stat-card-value">{{ lang.formatCurrency(12000) }}</div>
+          <div class="stat-card-value truncate">{{ lang.formatCurrency(12000) }}</div>
           <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? '31-60 يوم' : '31-60 Days' }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-icon bg-danger-100 text-danger-600">
-            <ng-icon name="heroExclamationTriangle" class="text-xl"></ng-icon>
+            <ng-icon name="heroExclamationTriangle" class="text-lg sm:text-xl"></ng-icon>
           </div>
-          <div class="stat-card-value">{{ lang.formatCurrency(8000) }}</div>
-          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'أكثر من 60 يوم' : 'Over 60 Days' }}</div>
+          <div class="stat-card-value truncate">{{ lang.formatCurrency(8000) }}</div>
+          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? '+60 يوم' : 'Over 60' }}</div>
         </div>
       </div>
 
       <!-- Aging Table -->
       <div class="card">
-        <div class="p-4 border-b border-gray-100">
-          <h2 class="text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'تفاصيل أعمار الذمم' : 'Aging Details' }}</h2>
+        <div class="p-3 sm:p-4 border-b border-gray-100">
+          <h2 class="text-base sm:text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'تفاصيل أعمار الذمم' : 'Aging Details' }}</h2>
         </div>
-        <div class="table-container">
+
+        <!-- Mobile Card View -->
+        <div class="md:hidden">
+          @for (record of agingRecords(); track record.id) {
+            <div class="p-3 sm:p-4 border-b border-gray-100 last:border-b-0">
+              <div class="flex items-center justify-between mb-3">
+                <div class="font-medium text-sm text-gray-900">{{ lang.currentLanguage() === 'ar' ? record.vendorNameAr : record.vendorName }}</div>
+                <div class="text-sm font-semibold">{{ lang.formatCurrency(record.total) }}</div>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="flex justify-between p-1.5 bg-gray-50 rounded">
+                  <span class="text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'جاري' : 'Current' }}</span>
+                  <span>{{ record.current > 0 ? lang.formatCurrency(record.current) : '-' }}</span>
+                </div>
+                <div class="flex justify-between p-1.5 bg-warning-50 rounded">
+                  <span class="text-gray-500">1-30</span>
+                  <span class="text-warning-600">{{ record.days1to30 > 0 ? lang.formatCurrency(record.days1to30) : '-' }}</span>
+                </div>
+                <div class="flex justify-between p-1.5 bg-orange-50 rounded">
+                  <span class="text-gray-500">31-60</span>
+                  <span class="text-orange-600">{{ record.days31to60 > 0 ? lang.formatCurrency(record.days31to60) : '-' }}</span>
+                </div>
+                <div class="flex justify-between p-1.5 bg-danger-50 rounded">
+                  <span class="text-gray-500">60+</span>
+                  <span class="text-danger-600">{{ (record.days61to90 + record.over90) > 0 ? lang.formatCurrency(record.days61to90 + record.over90) : '-' }}</span>
+                </div>
+              </div>
+            </div>
+          }
+          <!-- Mobile Total -->
+          <div class="p-3 sm:p-4 bg-gray-50 border-t border-gray-200">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-sm">{{ lang.currentLanguage() === 'ar' ? 'الإجمالي' : 'Total' }}</span>
+              <span class="font-bold">{{ lang.formatCurrency(100000) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="hidden md:block table-container">
           <table class="data-table">
             <thead>
               <tr>

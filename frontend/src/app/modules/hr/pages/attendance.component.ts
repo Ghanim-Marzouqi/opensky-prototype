@@ -38,16 +38,16 @@ interface AttendanceRecord {
   template: `
     <div>
       <!-- Header -->
-      <div class="page-header">
+      <div class="page-header flex-col sm:flex-row items-start sm:items-center gap-4">
         <div>
           <h1 class="page-title">{{ lang.currentLanguage() === 'ar' ? 'سجل الحضور' : 'Attendance' }}</h1>
           <p class="page-subtitle">{{ lang.currentLanguage() === 'ar' ? 'تتبع حضور وانصراف الموظفين' : 'Track employee check-in and check-out times' }}</p>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
           <button (click)="previousDay()" class="btn btn-ghost btn-icon">
             <ng-icon name="heroChevronLeft" class="text-lg flip-rtl"></ng-icon>
           </button>
-          <span class="px-4 py-2 bg-white rounded-xl border border-gray-200 text-sm font-medium">{{ currentDateFormatted }}</span>
+          <span class="px-3 sm:px-4 py-2 bg-white rounded-xl border border-gray-200 text-xs sm:text-sm font-medium text-center flex-1 sm:flex-none">{{ currentDateFormatted }}</span>
           <button (click)="nextDay()" class="btn btn-ghost btn-icon">
             <ng-icon name="heroChevronRight" class="text-lg flip-rtl"></ng-icon>
           </button>
@@ -55,7 +55,7 @@ interface AttendanceRecord {
       </div>
 
       <!-- Summary Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
         <div class="stat-card">
           <div class="stat-card-icon bg-success-100 text-success-600">
             <ng-icon name="heroCheckCircle" class="text-xl"></ng-icon>
@@ -89,9 +89,39 @@ interface AttendanceRecord {
       <!-- Attendance Table -->
       <div class="card">
         <div class="p-4 border-b border-gray-100">
-          <h2 class="text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'سجل اليوم' : 'Daily Record' }}</h2>
+          <h2 class="text-base sm:text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'سجل اليوم' : 'Daily Record' }}</h2>
         </div>
-        <div class="table-container">
+
+        <!-- Mobile Card View -->
+        <div class="md:hidden">
+          @for (record of attendanceRecords(); track record.id) {
+            <div class="p-4 border-b border-gray-100 last:border-b-0">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-medium text-gray-900">{{ lang.currentLanguage() === 'ar' ? record.employeeNameAr : record.employeeName }}</span>
+                <span class="badge" [class]="getStatusClass(record.status)">
+                  {{ getStatusLabel(record.status) }}
+                </span>
+              </div>
+              <div class="text-xs text-gray-500 mb-2">{{ lang.currentLanguage() === 'ar' ? record.departmentAr : record.department }}</div>
+              <div class="flex items-center justify-between text-sm">
+                <div>
+                  <span class="text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'الحضور:' : 'In:' }}</span>
+                  <span dir="ltr" class="font-medium ms-1">{{ record.checkIn || '-' }}</span>
+                </div>
+                <div>
+                  <span class="text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'الانصراف:' : 'Out:' }}</span>
+                  <span dir="ltr" class="font-medium ms-1">{{ record.checkOut || '-' }}</span>
+                </div>
+                <div>
+                  <span dir="ltr" class="font-medium text-primary-600">{{ record.workHours }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="hidden md:block table-container">
           <table class="data-table">
             <thead>
               <tr>

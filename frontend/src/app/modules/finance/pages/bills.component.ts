@@ -46,43 +46,76 @@ interface Bill {
       </div>
 
       <!-- Summary Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
         <div class="stat-card">
           <div class="stat-card-icon bg-primary-100 text-primary-600">
-            <ng-icon name="heroDocumentText" class="text-xl"></ng-icon>
+            <ng-icon name="heroDocumentText" class="text-lg sm:text-xl"></ng-icon>
           </div>
           <div class="stat-card-value">{{ lang.formatNumber(32) }}</div>
-          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'إجمالي الفواتير' : 'Total Bills' }}</div>
+          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'إجمالي' : 'Total' }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-icon bg-success-100 text-success-600">
-            <ng-icon name="heroDocumentText" class="text-xl"></ng-icon>
+            <ng-icon name="heroDocumentText" class="text-lg sm:text-xl"></ng-icon>
           </div>
-          <div class="stat-card-value">{{ lang.formatCurrency(85000) }}</div>
+          <div class="stat-card-value truncate">{{ lang.formatCurrency(85000) }}</div>
           <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'مدفوعة' : 'Paid' }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-icon bg-warning-100 text-warning-600">
-            <ng-icon name="heroDocumentText" class="text-xl"></ng-icon>
+            <ng-icon name="heroDocumentText" class="text-lg sm:text-xl"></ng-icon>
           </div>
-          <div class="stat-card-value">{{ lang.formatCurrency(42000) }}</div>
+          <div class="stat-card-value truncate">{{ lang.formatCurrency(42000) }}</div>
           <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'غير مدفوعة' : 'Unpaid' }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-icon bg-danger-100 text-danger-600">
-            <ng-icon name="heroDocumentText" class="text-xl"></ng-icon>
+            <ng-icon name="heroDocumentText" class="text-lg sm:text-xl"></ng-icon>
           </div>
-          <div class="stat-card-value">{{ lang.formatCurrency(15000) }}</div>
+          <div class="stat-card-value truncate">{{ lang.formatCurrency(15000) }}</div>
           <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'متأخرة' : 'Overdue' }}</div>
         </div>
       </div>
 
       <!-- Bills Table -->
       <div class="card">
-        <div class="p-4 border-b border-gray-100">
-          <h2 class="text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'قائمة الفواتير' : 'Bills List' }}</h2>
+        <div class="p-3 sm:p-4 border-b border-gray-100">
+          <h2 class="text-base sm:text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'قائمة الفواتير' : 'Bills List' }}</h2>
         </div>
-        <div class="table-container">
+
+        <!-- Mobile Card View -->
+        <div class="md:hidden">
+          @for (bill of bills(); track bill.id) {
+            <div class="p-3 sm:p-4 border-b border-gray-100 last:border-b-0">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="min-w-0 flex-1">
+                  <div class="font-medium text-sm text-gray-900 truncate">{{ lang.currentLanguage() === 'ar' ? bill.vendorNameAr : bill.vendorName }}</div>
+                  <div class="text-xs text-gray-500" dir="ltr">{{ bill.billNumber }}</div>
+                </div>
+                <span class="badge shrink-0" [class]="getStatusClass(bill.status)">
+                  {{ getStatusLabel(bill.status) }}
+                </span>
+              </div>
+              <div class="flex items-center justify-between text-sm mb-1">
+                <span class="text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'المبلغ:' : 'Amount:' }}</span>
+                <span class="font-semibold">{{ lang.formatCurrency(bill.amount) }}</span>
+              </div>
+              <div class="flex items-center justify-between text-sm mb-1">
+                <span class="text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'المدفوع:' : 'Paid:' }}</span>
+                <span class="text-success-600">{{ lang.formatCurrency(bill.paidAmount) }}</span>
+              </div>
+              <div class="flex items-center justify-between text-xs text-gray-500">
+                <span>{{ lang.currentLanguage() === 'ar' ? 'الاستحقاق:' : 'Due:' }} {{ lang.formatDate(bill.dueDate, 'short') }}</span>
+                <button class="btn btn-ghost btn-sm">
+                  <ng-icon name="heroEye" class="text-sm"></ng-icon>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="hidden md:block table-container">
           <table class="data-table">
             <thead>
               <tr>

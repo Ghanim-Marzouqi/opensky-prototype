@@ -28,40 +28,40 @@ import { LeaveRequest, LeaveType, LeaveBalance } from '../../../core/models';
       </div>
 
       <!-- Stats Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
         <div class="stat-card">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-xl">⏳</div>
-            <div>
-              <div class="text-2xl font-bold text-slate-900">{{ pendingCount() }}</div>
-              <div class="text-sm text-slate-500">{{ lang.currentLanguage() === 'ar' ? 'قيد الانتظار' : 'Pending' }}</div>
+          <div class="flex items-center gap-2 sm:gap-3">
+            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-base sm:text-xl shrink-0">⏳</div>
+            <div class="min-w-0">
+              <div class="stat-card-value">{{ pendingCount() }}</div>
+              <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'قيد الانتظار' : 'Pending' }}</div>
             </div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center text-xl">✓</div>
-            <div>
-              <div class="text-2xl font-bold text-slate-900">{{ approvedCount() }}</div>
-              <div class="text-sm text-slate-500">{{ lang.currentLanguage() === 'ar' ? 'موافق عليها' : 'Approved' }}</div>
+          <div class="flex items-center gap-2 sm:gap-3">
+            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center text-base sm:text-xl shrink-0">✓</div>
+            <div class="min-w-0">
+              <div class="stat-card-value">{{ approvedCount() }}</div>
+              <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'موافق عليها' : 'Approved' }}</div>
             </div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl">✗</div>
-            <div>
-              <div class="text-2xl font-bold text-slate-900">{{ rejectedCount() }}</div>
-              <div class="text-sm text-slate-500">{{ lang.currentLanguage() === 'ar' ? 'مرفوضة' : 'Rejected' }}</div>
+          <div class="flex items-center gap-2 sm:gap-3">
+            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-base sm:text-xl shrink-0">✗</div>
+            <div class="min-w-0">
+              <div class="stat-card-value">{{ rejectedCount() }}</div>
+              <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'مرفوضة' : 'Rejected' }}</div>
             </div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xl">📅</div>
-            <div>
-              <div class="text-2xl font-bold text-slate-900">{{ totalRequests().length }}</div>
-              <div class="text-sm text-slate-500">{{ lang.currentLanguage() === 'ar' ? 'إجمالي الطلبات' : 'Total Requests' }}</div>
+          <div class="flex items-center gap-2 sm:gap-3">
+            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-base sm:text-xl shrink-0">📅</div>
+            <div class="min-w-0">
+              <div class="stat-card-value">{{ totalRequests().length }}</div>
+              <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'إجمالي الطلبات' : 'Total' }}</div>
             </div>
           </div>
         </div>
@@ -69,8 +69,8 @@ import { LeaveRequest, LeaveType, LeaveBalance } from '../../../core/models';
 
       <!-- Filters -->
       <div class="card mb-6">
-        <div class="p-4 flex flex-wrap items-center gap-4">
-          <div class="flex-1 min-w-64">
+        <div class="p-4 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 sm:items-center">
+          <div class="w-full sm:flex-1 sm:min-w-48 sm:max-w-sm">
             <input
               type="text"
               [(ngModel)]="searchQuery"
@@ -78,24 +78,79 @@ import { LeaveRequest, LeaveType, LeaveBalance } from '../../../core/models';
               class="form-input"
             />
           </div>
-          <select [(ngModel)]="statusFilter" class="form-select w-40">
-            <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع الحالات' : 'All Status' }}</option>
-            <option value="pending">{{ lang.currentLanguage() === 'ar' ? 'قيد الانتظار' : 'Pending' }}</option>
-            <option value="approved">{{ lang.currentLanguage() === 'ar' ? 'موافق عليه' : 'Approved' }}</option>
-            <option value="rejected">{{ lang.currentLanguage() === 'ar' ? 'مرفوض' : 'Rejected' }}</option>
-          </select>
-          <select [(ngModel)]="leaveTypeFilter" class="form-select w-48">
-            <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع الأنواع' : 'All Types' }}</option>
-            @for (type of leaveTypes; track type.id) {
-              <option [value]="type.id">{{ lang.currentLanguage() === 'ar' ? type.nameAr : type.name }}</option>
-            }
-          </select>
+          <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <select [(ngModel)]="statusFilter" class="form-select w-full sm:w-36 md:w-40">
+              <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع الحالات' : 'All Status' }}</option>
+              <option value="pending">{{ lang.currentLanguage() === 'ar' ? 'قيد الانتظار' : 'Pending' }}</option>
+              <option value="approved">{{ lang.currentLanguage() === 'ar' ? 'موافق عليه' : 'Approved' }}</option>
+              <option value="rejected">{{ lang.currentLanguage() === 'ar' ? 'مرفوض' : 'Rejected' }}</option>
+            </select>
+            <select [(ngModel)]="leaveTypeFilter" class="form-select w-full sm:w-40 md:w-48">
+              <option value="">{{ lang.currentLanguage() === 'ar' ? 'جميع الأنواع' : 'All Types' }}</option>
+              @for (type of leaveTypes; track type.id) {
+                <option [value]="type.id">{{ lang.currentLanguage() === 'ar' ? type.nameAr : type.name }}</option>
+              }
+            </select>
+          </div>
         </div>
       </div>
 
       <!-- Requests List -->
       <div class="card overflow-hidden">
-        <div class="table-container">
+        <!-- Mobile Card View -->
+        <div class="md:hidden">
+          @for (request of filteredRequests(); track request.id) {
+            <div class="p-4 border-b border-gray-100 last:border-b-0">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-semibold text-xs shrink-0">
+                  {{ getInitials(request.employeeName) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <div class="font-medium text-slate-900">
+                        {{ lang.currentLanguage() === 'ar' && request.employeeNameAr ? request.employeeNameAr : request.employeeName }}
+                      </div>
+                      <div class="text-xs text-slate-500">{{ request.departmentName }}</div>
+                    </div>
+                    <span class="badge shrink-0" [class]="getStatusBadgeClass(request.status)">
+                      {{ getStatusLabel(request.status) }}
+                    </span>
+                  </div>
+                  <div class="mt-2 flex flex-wrap gap-2 text-sm">
+                    <span class="badge" [class]="getLeaveTypeBadgeClass(request.leaveTypeName)">
+                      {{ lang.currentLanguage() === 'ar' ? request.leaveTypeNameAr : request.leaveTypeName }}
+                    </span>
+                    <span class="text-slate-500">{{ request.totalDays }} {{ lang.currentLanguage() === 'ar' ? 'أيام' : 'days' }}</span>
+                  </div>
+                  <div class="mt-1 text-xs text-slate-500">
+                    {{ lang.formatDate(request.startDate, 'short') }} - {{ lang.formatDate(request.endDate, 'short') }}
+                  </div>
+                  @if (request.status === 'pending') {
+                    <div class="mt-3 flex items-center gap-2">
+                      <button (click)="approveRequest(request)" class="btn btn-sm btn-success flex-1">
+                        {{ lang.currentLanguage() === 'ar' ? 'موافقة' : 'Approve' }}
+                      </button>
+                      <button (click)="rejectRequest(request)" class="btn btn-sm btn-secondary flex-1">
+                        {{ lang.currentLanguage() === 'ar' ? 'رفض' : 'Reject' }}
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <div class="text-center py-12">
+              <div class="text-slate-400">
+                <span class="text-4xl">📋</span>
+                <p class="mt-2">{{ lang.currentLanguage() === 'ar' ? 'لا توجد طلبات' : 'No requests found' }}</p>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="hidden md:block table-container">
           <table class="data-table">
             <thead>
               <tr>
@@ -187,18 +242,18 @@ import { LeaveRequest, LeaveType, LeaveBalance } from '../../../core/models';
         <div class="modal-overlay" (click)="showNewRequestModal = false"></div>
         <div class="fixed inset-0 z-50 overflow-y-auto">
           <div class="flex min-h-full items-center justify-center p-4">
-            <div class="modal-content max-w-lg" (click)="$event.stopPropagation()">
-              <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+            <div class="modal-content w-full max-w-lg" (click)="$event.stopPropagation()">
+              <div class="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-200">
                 <h3 class="text-lg font-semibold text-slate-900">
                   {{ lang.currentLanguage() === 'ar' ? 'طلب إجازة جديد' : 'New Leave Request' }}
                 </h3>
-                <button (click)="showNewRequestModal = false" class="p-1 text-slate-400 hover:text-slate-600">
+                <button (click)="showNewRequestModal = false" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
-              <div class="px-6 py-5 space-y-4">
+              <div class="px-4 sm:px-6 py-5 space-y-4 max-h-[60vh] overflow-y-auto">
                 <div>
                   <label class="form-label">{{ lang.currentLanguage() === 'ar' ? 'نوع الإجازة' : 'Leave Type' }} *</label>
                   <select class="form-select">
@@ -208,7 +263,7 @@ import { LeaveRequest, LeaveType, LeaveBalance } from '../../../core/models';
                   </select>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="form-label">{{ lang.currentLanguage() === 'ar' ? 'تاريخ البداية' : 'Start Date' }} *</label>
                     <input type="date" class="form-input" />
@@ -237,7 +292,7 @@ import { LeaveRequest, LeaveType, LeaveBalance } from '../../../core/models';
 
                 <div>
                   <label class="form-label">{{ lang.currentLanguage() === 'ar' ? 'المرفقات' : 'Attachments' }}</label>
-                  <div class="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-primary-500 cursor-pointer">
+                  <div class="border-2 border-dashed border-slate-300 rounded-lg p-4 sm:p-6 text-center hover:border-primary-500 cursor-pointer">
                     <svg class="w-8 h-8 mx-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
@@ -247,11 +302,11 @@ import { LeaveRequest, LeaveType, LeaveBalance } from '../../../core/models';
                   </div>
                 </div>
               </div>
-              <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 bg-slate-50">
-                <button class="btn btn-secondary" (click)="showNewRequestModal = false">
+              <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3 px-4 sm:px-6 py-4 border-t border-slate-200 bg-slate-50">
+                <button class="btn btn-secondary w-full sm:w-auto" (click)="showNewRequestModal = false">
                   {{ lang.currentLanguage() === 'ar' ? 'إلغاء' : 'Cancel' }}
                 </button>
-                <button class="btn btn-primary">
+                <button class="btn btn-primary w-full sm:w-auto">
                   {{ lang.currentLanguage() === 'ar' ? 'تقديم الطلب' : 'Submit Request' }}
                 </button>
               </div>

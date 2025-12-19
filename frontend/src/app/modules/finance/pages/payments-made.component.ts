@@ -47,24 +47,24 @@ interface PaymentMade {
       </div>
 
       <!-- Summary Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div class="stat-card">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6">
+        <div class="stat-card col-span-2 md:col-span-1">
           <div class="stat-card-icon bg-danger-100 text-danger-600">
-            <ng-icon name="heroArrowUpRight" class="text-xl"></ng-icon>
+            <ng-icon name="heroArrowUpRight" class="text-lg sm:text-xl"></ng-icon>
           </div>
-          <div class="stat-card-value">{{ lang.formatCurrency(98500) }}</div>
+          <div class="stat-card-value truncate">{{ lang.formatCurrency(98500) }}</div>
           <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'إجمالي المدفوعات' : 'Total Paid' }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-icon bg-primary-100 text-primary-600">
-            <ng-icon name="heroBanknotes" class="text-xl"></ng-icon>
+            <ng-icon name="heroBanknotes" class="text-lg sm:text-xl"></ng-icon>
           </div>
           <div class="stat-card-value">{{ lang.formatNumber(35) }}</div>
-          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'عدد المدفوعات' : 'Total Payments' }}</div>
+          <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'عدد المدفوعات' : 'Payments' }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-icon bg-warning-100 text-warning-600">
-            <ng-icon name="heroBanknotes" class="text-xl"></ng-icon>
+            <ng-icon name="heroBanknotes" class="text-lg sm:text-xl"></ng-icon>
           </div>
           <div class="stat-card-value">{{ lang.formatNumber(3) }}</div>
           <div class="stat-card-label">{{ lang.currentLanguage() === 'ar' ? 'قيد الانتظار' : 'Pending' }}</div>
@@ -73,10 +73,41 @@ interface PaymentMade {
 
       <!-- Payments Table -->
       <div class="card">
-        <div class="p-4 border-b border-gray-100">
-          <h2 class="text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'المدفوعات الأخيرة' : 'Recent Payments' }}</h2>
+        <div class="p-3 sm:p-4 border-b border-gray-100">
+          <h2 class="text-base sm:text-lg font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'المدفوعات الأخيرة' : 'Recent Payments' }}</h2>
         </div>
-        <div class="table-container">
+
+        <!-- Mobile Card View -->
+        <div class="md:hidden">
+          @for (payment of payments(); track payment.id) {
+            <div class="p-3 sm:p-4 border-b border-gray-100 last:border-b-0">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="min-w-0 flex-1">
+                  <div class="font-medium text-sm text-gray-900 truncate">{{ lang.currentLanguage() === 'ar' ? payment.vendorNameAr : payment.vendorName }}</div>
+                  <div class="text-xs text-gray-500" dir="ltr">{{ payment.paymentNumber }}</div>
+                </div>
+                <span class="badge shrink-0" [class]="getStatusClass(payment.status)">
+                  {{ getStatusLabel(payment.status) }}
+                </span>
+              </div>
+              <div class="flex items-center justify-between text-sm mb-1">
+                <span class="text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'الفاتورة:' : 'Bill:' }}</span>
+                <span dir="ltr" class="font-medium">{{ payment.billNumber }}</span>
+              </div>
+              <div class="flex items-center justify-between text-sm mb-1">
+                <span class="text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'المبلغ:' : 'Amount:' }}</span>
+                <span class="font-semibold text-danger-600">{{ lang.formatCurrency(payment.amount) }}</span>
+              </div>
+              <div class="flex items-center justify-between text-xs text-gray-500">
+                <span>{{ lang.currentLanguage() === 'ar' ? payment.paymentMethodAr : payment.paymentMethod }}</span>
+                <span>{{ lang.formatDate(payment.paymentDate, 'short') }}</span>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="hidden md:block table-container">
           <table class="data-table">
             <thead>
               <tr>
