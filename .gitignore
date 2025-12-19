@@ -1,0 +1,75 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+tmp/
+out-tsc/
+bazel-out/
+
+# Angular cache
+.angular/
+
+# IDE and editors
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.sublime-workspace
+*.sublime-project
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+.history/
+
+# Testing
+coverage/
+.nyc_output/
+testem.log
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Environment files
+.env
+.env.local
+.env.*.local
+*.local
+
+# Misc
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.sass-cache/
+connect.lock
+libpeerconnection.log
+typings/
+__screenshots__/
+
+# Package manager locks (optional - uncomment if you don't want to track)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
