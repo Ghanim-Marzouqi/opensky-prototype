@@ -131,17 +131,17 @@
 
   /* Modern Card Styles - Prodify-inspired */
   .card {
-    @apply bg-white rounded-2xl border border-gray-100 shadow-soft;
+    @apply bg-white rounded-2xl border border-gray-200 shadow-soft;
   }
 
   .stat-card {
-    @apply relative overflow-hidden bg-white rounded-xl sm:rounded-2xl border border-gray-100 p-3 sm:p-6 transition-all duration-300;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    @apply relative overflow-hidden bg-white rounded-xl sm:rounded-2xl border border-gray-200 p-3 sm:p-6 transition-all duration-300;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   }
 
   .stat-card:hover {
-    @apply border-gray-200;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    @apply border-gray-300;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
   .stat-card-icon {
@@ -153,7 +153,7 @@
   }
 
   .stat-card-label {
-    @apply text-xs sm:text-sm text-gray-500 mt-0.5 sm:mt-1 font-medium truncate;
+    @apply text-xs sm:text-sm text-gray-600 mt-0.5 sm:mt-1 font-medium truncate;
   }
 
   .stat-card-change {
@@ -216,20 +216,20 @@
 
   /* Sidebar Navigation Styles - Prodify Light Theme */
   .nav-item {
-    @apply flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-600 rounded-xl transition-all duration-200;
+    @apply flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl transition-all duration-200;
     @apply hover:bg-primary-50 hover:text-primary-700;
   }
 
   .nav-item.active {
-    @apply bg-primary-50 text-primary-700;
+    @apply bg-primary-100 text-primary-700 font-semibold;
   }
 
   html[dir="rtl"] .nav-item.active {
-    @apply bg-primary-50 text-primary-700;
+    @apply bg-primary-100 text-primary-700 font-semibold;
   }
 
   .nav-section-title {
-    @apply px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider;
+    @apply px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider;
   }
 
   /* Modal Styles */
@@ -238,7 +238,7 @@
   }
 
   .modal-content {
-    @apply w-full bg-white rounded-2xl shadow-xl border border-gray-100;
+    @apply w-full bg-white rounded-2xl shadow-xl border border-gray-200;
   }
 
   /* Responsive Modal */
@@ -264,7 +264,7 @@
   }
 
   .data-table th {
-    @apply px-5 py-4 text-left font-medium text-gray-500 bg-gray-50/50 border-b border-gray-100 text-xs tracking-wide whitespace-nowrap;
+    @apply px-5 py-4 text-left font-semibold text-gray-600 bg-gray-50 border-b border-gray-200 text-xs tracking-wide whitespace-nowrap;
   }
 
   html[dir="rtl"] .data-table th {
@@ -272,7 +272,7 @@
   }
 
   .data-table td {
-    @apply px-5 py-4 border-b border-gray-50 text-gray-700;
+    @apply px-5 py-4 border-b border-gray-100 text-gray-700;
   }
 
   .data-table tbody tr {
@@ -311,8 +311,8 @@
 
   /* Tab Styles */
   .tab {
-    @apply px-5 py-3 text-sm font-medium text-gray-500 border-b-2 border-transparent transition-all duration-200 cursor-pointer;
-    @apply hover:text-gray-700;
+    @apply px-5 py-3 text-sm font-medium text-gray-600 border-b-2 border-transparent transition-all duration-200 cursor-pointer;
+    @apply hover:text-gray-800;
   }
 
   .tab.active {
@@ -335,18 +335,18 @@
   }
 
   .page-subtitle {
-    @apply text-sm sm:text-base text-gray-500 mt-0.5 sm:mt-1;
+    @apply text-sm sm:text-base text-gray-600 mt-0.5 sm:mt-1;
   }
 
   /* Sidebar Styles - Light Prodify Theme */
   .sidebar {
-    @apply fixed left-0 top-0 h-screen w-64 z-50 flex flex-col bg-white border-r border-gray-100;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.02);
+    @apply fixed left-0 top-0 h-screen w-64 z-50 flex flex-col bg-white border-r border-gray-200;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
   }
 
   html[dir="rtl"] .sidebar {
-    @apply left-auto right-0 border-r-0 border-l border-gray-100;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.02);
+    @apply left-auto right-0 border-r-0 border-l border-gray-200;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.04);
   }
 
   .sidebar-collapsed {
@@ -362,24 +362,24 @@
 
   /* Sidebar Light Nav Items - Already light theme friendly */
   .sidebar .nav-item {
-    @apply text-gray-600 hover:bg-primary-50 hover:text-primary-700;
+    @apply text-gray-700 hover:bg-primary-50 hover:text-primary-700;
   }
 
   .sidebar .nav-item.active {
-    @apply bg-primary-50 text-primary-700;
+    @apply bg-primary-100 text-primary-700 font-semibold;
   }
 
   html[dir="rtl"] .sidebar .nav-item.active {
-    @apply bg-primary-50 text-primary-700;
+    @apply bg-primary-100 text-primary-700 font-semibold;
   }
 
   .sidebar .nav-section-title {
-    @apply text-gray-400;
+    @apply text-gray-500;
   }
 
   /* Header Styles */
   .header {
-    @apply fixed top-0 right-0 h-16 bg-white/90 backdrop-blur-xl border-b border-gray-100 z-20;
+    @apply fixed top-0 right-0 h-16 bg-white/90 backdrop-blur-xl border-b border-gray-200 z-20;
   }
 
   html[dir="rtl"] .header {
@@ -394,7 +394,7 @@
 
   /* Progress Bar */
   .progress-bar {
-    @apply h-2 bg-gray-100 rounded-full overflow-hidden;
+    @apply h-2 bg-gray-200 rounded-full overflow-hidden;
   }
 
   .progress-bar-fill {
@@ -404,12 +404,12 @@
 
   /* Chart Container */
   .chart-container {
-    @apply bg-gray-50/50 rounded-xl p-4 border border-gray-100;
+    @apply bg-gray-50 rounded-xl p-4 border border-gray-200;
   }
 
   /* Divider */
   .divider {
-    @apply border-t border-gray-100 my-4;
+    @apply border-t border-gray-200 my-4;
   }
 
   /* Skeleton Loading */
@@ -467,8 +467,8 @@
 
   /* Quick Action Card */
   .quick-action {
-    @apply flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-100 cursor-pointer transition-all duration-200;
-    @apply hover:shadow-md hover:border-primary-200 hover:bg-primary-50/30;
+    @apply flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 cursor-pointer transition-all duration-200;
+    @apply hover:shadow-md hover:border-primary-300 hover:bg-primary-50/30;
   }
 
   /* User profile card in sidebar - Prodify style */
@@ -536,7 +536,7 @@
 
   /* Mobile employee/item card */
   .mobile-item-card {
-    @apply bg-white rounded-xl border border-gray-100 p-4 space-y-3;
+    @apply bg-white rounded-xl border border-gray-200 p-4 space-y-3;
   }
 
   .mobile-item-card-header {
@@ -548,7 +548,7 @@
   }
 
   .mobile-item-card-label {
-    @apply text-gray-500 text-xs;
+    @apply text-gray-600 text-xs;
   }
 
   .mobile-item-card-value {
@@ -556,7 +556,7 @@
   }
 
   .mobile-item-card-actions {
-    @apply flex gap-2 pt-2 border-t border-gray-100 mt-3;
+    @apply flex gap-2 pt-2 border-t border-gray-200 mt-3;
   }
 
   .text-gradient {
@@ -665,4 +665,434 @@
   .gap-responsive {
     @apply gap-2 sm:gap-3 md:gap-4;
   }
+}
+
+/* ========================================
+   DARK MODE STYLES - High Contrast Theme
+   ======================================== */
+
+/* Dark Mode Base */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #0A0A0A;
+  color: #F3F4F6;
+}
+
+/* Dark Mode Scrollbar */
+html.dark ::-webkit-scrollbar-track {
+  background-color: #171717;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background-color: #404040;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #525252;
+}
+
+/* Dark Mode Cards */
+html.dark .card {
+  background-color: #171717;
+  border-color: #262626;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .stat-card {
+  background-color: #171717;
+  border-color: #262626;
+}
+
+html.dark .stat-card:hover {
+  border-color: #404040;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+html.dark .stat-card-value {
+  color: #FFFFFF;
+}
+
+html.dark .stat-card-label {
+  color: #9CA3AF;
+}
+
+/* Dark Mode Sidebar */
+html.dark .sidebar {
+  background-color: #171717;
+  border-color: #262626;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+}
+
+html[dir="rtl"].dark .sidebar {
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .sidebar .nav-item {
+  color: #D1D5DB;
+}
+
+html.dark .sidebar .nav-item:hover {
+  background-color: #262626;
+  color: #FFFFFF;
+}
+
+html.dark .sidebar .nav-item.active {
+  background-color: rgba(91, 33, 182, 0.5);
+  color: #D8B4FE;
+}
+
+html.dark .sidebar .nav-section-title {
+  color: #6B7280;
+}
+
+/* Dark Mode Header */
+html.dark .header {
+  background-color: rgba(23, 23, 23, 0.95);
+  border-color: #262626;
+}
+
+/* Dark Mode Navigation */
+html.dark .nav-item {
+  color: #D1D5DB;
+}
+
+html.dark .nav-item:hover {
+  background-color: #262626;
+  color: #FFFFFF;
+}
+
+html.dark .nav-item.active {
+  background-color: rgba(91, 33, 182, 0.5);
+  color: #D8B4FE;
+}
+
+/* Dark Mode Buttons */
+html.dark .btn-secondary {
+  background-color: #262626;
+  color: #E5E7EB;
+  border-color: #404040;
+}
+
+html.dark .btn-secondary:hover {
+  background-color: #404040;
+  border-color: #525252;
+}
+
+html.dark .btn-ghost {
+  color: #D1D5DB;
+}
+
+html.dark .btn-ghost:hover {
+  background-color: #262626;
+  color: #FFFFFF;
+}
+
+/* Dark Mode Form Inputs */
+html.dark .form-input {
+  background-color: #262626;
+  border-color: #404040;
+  color: #FFFFFF;
+}
+
+html.dark .form-input::placeholder {
+  color: #6B7280;
+}
+
+html.dark .form-input:focus {
+  border-color: #9333EA;
+}
+
+html.dark .form-select {
+  background-color: #262626;
+  border-color: #404040;
+  color: #FFFFFF;
+}
+
+/* Dark Mode Tables */
+html.dark .table-container {
+  background-color: #171717;
+}
+
+html.dark .data-table th {
+  background-color: rgba(38, 38, 38, 0.5);
+  color: #9CA3AF;
+  border-color: #404040;
+}
+
+html.dark .data-table td {
+  border-color: #262626;
+  color: #D1D5DB;
+}
+
+html.dark .data-table tbody tr:hover {
+  background-color: rgba(38, 38, 38, 0.5);
+}
+
+/* Dark Mode Badges */
+html.dark .badge-success {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #4ADE80;
+}
+
+html.dark .badge-warning {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #FBBF24;
+}
+
+html.dark .badge-danger {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #F87171;
+}
+
+html.dark .badge-info {
+  background-color: rgba(20, 184, 166, 0.2);
+  color: #2DD4BF;
+}
+
+html.dark .badge-primary {
+  background-color: rgba(168, 85, 247, 0.2);
+  color: #C084FC;
+}
+
+html.dark .badge-neutral {
+  background-color: #404040;
+  color: #D1D5DB;
+}
+
+/* Dark Mode Page Elements */
+html.dark .page-title {
+  color: #FFFFFF;
+}
+
+html.dark .page-subtitle {
+  color: #9CA3AF;
+}
+
+/* Dark Mode Icon Wrappers */
+html.dark .icon-wrapper-primary {
+  background-color: rgba(91, 33, 182, 0.5);
+  color: #C084FC;
+}
+
+html.dark .icon-wrapper-success {
+  background-color: rgba(20, 83, 45, 0.5);
+  color: #4ADE80;
+}
+
+html.dark .icon-wrapper-warning {
+  background-color: rgba(120, 53, 15, 0.5);
+  color: #FBBF24;
+}
+
+html.dark .icon-wrapper-danger {
+  background-color: rgba(127, 29, 29, 0.5);
+  color: #F87171;
+}
+
+html.dark .icon-wrapper-accent {
+  background-color: rgba(19, 78, 74, 0.5);
+  color: #2DD4BF;
+}
+
+/* Dark Mode Progress Bar */
+html.dark .progress-bar {
+  background-color: #404040;
+}
+
+/* Dark Mode Modal */
+html.dark .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+html.dark .modal-content {
+  background-color: #171717;
+  border-color: #262626;
+}
+
+/* Dark Mode Activity Item */
+html.dark .activity-item:hover {
+  background-color: #262626;
+}
+
+/* Dark Mode Quick Action */
+html.dark .quick-action {
+  background-color: #171717;
+  border-color: #262626;
+}
+
+html.dark .quick-action:hover {
+  border-color: #7C3AED;
+  background-color: #262626;
+}
+
+/* Dark Mode Tooltip */
+html.dark .tooltip {
+  background-color: #404040;
+  color: #FFFFFF;
+}
+
+/* Dark Mode Divider */
+html.dark .divider {
+  border-color: #262626;
+}
+
+/* Dark Mode Tab */
+html.dark .tab {
+  color: #9CA3AF;
+}
+
+html.dark .tab:hover {
+  color: #E5E7EB;
+}
+
+html.dark .tab.active {
+  color: #C084FC;
+  border-color: #C084FC;
+}
+
+/* Dark Mode Chart Container */
+html.dark .chart-container {
+  background-color: rgba(38, 38, 38, 0.5);
+  border-color: #404040;
+}
+
+/* Dark Mode Skeleton */
+html.dark .skeleton {
+  background-color: #404040;
+}
+
+/* Dark Mode specific stat card colors */
+html.dark .bg-primary-100 {
+  background-color: rgba(124, 58, 237, 0.15) !important;
+}
+
+html.dark .bg-success-100 {
+  background-color: rgba(34, 197, 94, 0.15) !important;
+}
+
+html.dark .bg-warning-100 {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+}
+
+html.dark .bg-danger-100 {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+}
+
+html.dark .bg-accent-100 {
+  background-color: rgba(20, 184, 166, 0.15) !important;
+}
+
+html.dark .bg-orange-100 {
+  background-color: rgba(249, 115, 22, 0.15) !important;
+}
+
+/* Dark Mode Text Colors - Using direct color values to avoid circular dependencies */
+html.dark .text-gray-900 {
+  color: #FFFFFF !important;
+}
+
+html.dark .text-gray-800 {
+  color: #F3F4F6 !important;
+}
+
+html.dark .text-gray-700 {
+  color: #E5E7EB !important;
+}
+
+html.dark .text-gray-600 {
+  color: #D1D5DB !important;
+}
+
+html.dark .text-gray-500 {
+  color: #9CA3AF !important;
+}
+
+/* Dark Mode Background Colors - Using direct color values */
+html.dark .bg-white {
+  background-color: #171717 !important;
+}
+
+html.dark .bg-gray-50 {
+  background-color: #262626 !important;
+}
+
+html.dark .bg-gray-100 {
+  background-color: #262626 !important;
+}
+
+/* Dark Mode Borders - Using direct color values */
+html.dark .border-gray-100 {
+  border-color: #262626 !important;
+}
+
+html.dark .border-gray-200 {
+  border-color: #404040 !important;
+}
+
+html.dark .border-gray-300 {
+  border-color: #525252 !important;
+}
+
+/* Dark Mode Mobile Card View */
+html.dark .mobile-item-card {
+  background-color: #171717;
+  border-color: #262626;
+}
+
+/* Dark Mode Specific Overrides for Better Contrast */
+html.dark .bg-warning-50 {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+}
+
+html.dark .bg-orange-50 {
+  background-color: rgba(249, 115, 22, 0.1) !important;
+}
+
+html.dark .bg-danger-50 {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+html.dark .bg-success-50 {
+  background-color: rgba(34, 197, 94, 0.1) !important;
+}
+
+html.dark .bg-primary-50 {
+  background-color: rgba(124, 58, 237, 0.1) !important;
+}
+
+html.dark .bg-accent-50 {
+  background-color: rgba(20, 184, 166, 0.1) !important;
+}
+
+/* Dark Mode Login Page */
+html.dark .login-container {
+  background-color: #0A0A0A;
+}
+
+/* Ensure high contrast for text on colored badges in dark mode - Using direct color values */
+html.dark .text-success-600 {
+  color: #4ADE80 !important;
+}
+
+html.dark .text-warning-600 {
+  color: #FBBF24 !important;
+}
+
+html.dark .text-danger-600 {
+  color: #F87171 !important;
+}
+
+html.dark .text-primary-600 {
+  color: #C084FC !important;
+}
+
+html.dark .text-accent-600 {
+  color: #2DD4BF !important;
+}
+
+html.dark .text-orange-600 {
+  color: #FB923C !important;
 }

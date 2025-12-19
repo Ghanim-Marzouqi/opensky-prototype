@@ -56,10 +56,10 @@ interface Department {
         <!-- CEO Card -->
         <div class="card p-4">
           <div class="flex items-center gap-3 mb-3">
-            <div class="avatar w-14 h-14 text-lg ring-2 ring-primary-200">MS</div>
+            <div class="avatar w-14 h-14 text-lg ring-2 ring-primary-200 dark:ring-primary-700">MS</div>
             <div>
-              <div class="font-semibold text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'محمد السعيدي' : 'Mohammed Al-Said' }}</div>
-              <div class="text-sm text-primary-600 font-medium">{{ lang.currentLanguage() === 'ar' ? 'الرئيس التنفيذي' : 'CEO' }}</div>
+              <div class="font-semibold text-gray-900 dark:text-white">{{ lang.currentLanguage() === 'ar' ? 'محمد السعيدي' : 'Mohammed Al-Said' }}</div>
+              <div class="text-sm text-primary-600 dark:text-primary-400 font-medium">{{ lang.currentLanguage() === 'ar' ? 'الرئيس التنفيذي' : 'CEO' }}</div>
             </div>
           </div>
         </div>
@@ -68,14 +68,14 @@ interface Department {
         @for (dept of departments(); track dept.id) {
           <div class="card overflow-hidden">
             <!-- Department Header -->
-            <div class="p-3 border-b border-gray-100" [class]="'bg-' + dept.color + '-50'">
+            <div class="p-3 border-b border-gray-100 dark:border-surface-700 dept-header" [class]="'bg-' + dept.color + '-50'">
               <div class="flex items-center gap-3">
                 <div class="avatar w-10 h-10 text-sm" [class]="'avatar-' + dept.color">
                   {{ getInitials(dept.name) }}
                 </div>
                 <div class="flex-1 min-w-0">
-                  <div class="font-semibold text-sm text-gray-900 truncate">{{ lang.currentLanguage() === 'ar' ? dept.nameAr : dept.name }}</div>
-                  <div class="text-xs text-gray-500">{{ lang.currentLanguage() === 'ar' ? dept.positionAr : dept.position }}</div>
+                  <div class="font-semibold text-sm text-gray-900 dark:text-white truncate">{{ lang.currentLanguage() === 'ar' ? dept.nameAr : dept.name }}</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ lang.currentLanguage() === 'ar' ? dept.positionAr : dept.position }}</div>
                 </div>
                 <div class="badge text-[10px] px-2 py-0.5" [class]="'badge-' + dept.color">
                   {{ lang.currentLanguage() === 'ar' ? dept.departmentAr : dept.department }}
@@ -86,13 +86,13 @@ interface Department {
             @if (dept.members.length > 0) {
               <div class="p-2 space-y-1.5">
                 @for (member of dept.members; track member.id) {
-                  <div class="flex items-center gap-2 p-2 rounded-lg bg-gray-50">
+                  <div class="flex items-center gap-2 p-2 rounded-lg bg-gray-50 dark:bg-surface-800">
                     <div class="avatar w-8 h-8 text-xs" [class]="'avatar-' + dept.color">
                       {{ getInitials(member.name) }}
                     </div>
                     <div class="flex-1 min-w-0">
-                      <div class="text-sm font-medium text-gray-900 truncate">{{ lang.currentLanguage() === 'ar' ? member.nameAr : member.name }}</div>
-                      <div class="text-xs text-gray-500 truncate">{{ lang.currentLanguage() === 'ar' ? member.positionAr : member.position }}</div>
+                      <div class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ lang.currentLanguage() === 'ar' ? member.nameAr : member.name }}</div>
+                      <div class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ lang.currentLanguage() === 'ar' ? member.positionAr : member.position }}</div>
                     </div>
                   </div>
                 }
@@ -577,6 +577,153 @@ interface Department {
     .bar-blue { background: linear-gradient(90deg, #3B82F6, #60A5FA); }
     .bar-orange { background: linear-gradient(90deg, #F97316, #FB923C); }
     .bar-pink { background: linear-gradient(90deg, #EC4899, #F472B6); }
+
+    /* ========== DARK MODE STYLES ========== */
+
+    /* Dark Mode Connectors */
+    :host-context(html.dark) .connector-line {
+      background: linear-gradient(180deg, #404040 0%, #525252 100%);
+    }
+
+    :host-context(html.dark) .connector-dot {
+      background: #171717;
+      border-color: #6B7280;
+    }
+
+    :host-context(html.dark) .connector-branch {
+      background: linear-gradient(90deg, transparent 0%, #525252 15%, #525252 85%, transparent 100%);
+    }
+
+    /* Dark Mode Color-specific connector lines */
+    :host-context(html.dark) .line-purple { background: linear-gradient(180deg, #5B21B6 0%, #7C3AED 100%); }
+    :host-context(html.dark) .line-teal { background: linear-gradient(180deg, #0F766E 0%, #14B8A6 100%); }
+    :host-context(html.dark) .line-blue { background: linear-gradient(180deg, #1D4ED8 0%, #3B82F6 100%); }
+    :host-context(html.dark) .line-orange { background: linear-gradient(180deg, #C2410C 0%, #F97316 100%); }
+    :host-context(html.dark) .line-pink { background: linear-gradient(180deg, #BE185D 0%, #EC4899 100%); }
+
+    /* Dark Mode Org Nodes */
+    :host-context(html.dark) .org-node {
+      background: #171717;
+      border-color: #404040;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    :host-context(html.dark) .org-node:hover {
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+      border-color: #525252;
+    }
+
+    /* Dark Mode CEO Node */
+    :host-context(html.dark) .ceo-node {
+      background: linear-gradient(135deg, rgba(91, 33, 182, 0.2) 0%, rgba(124, 58, 237, 0.1) 100%);
+      border-color: #5B21B6;
+    }
+
+    :host-context(html.dark) .ceo-node:hover {
+      border-color: #7C3AED;
+      box-shadow: 0 16px 32px rgba(124, 58, 237, 0.25);
+    }
+
+    :host-context(html.dark) .status-dot {
+      border-color: #171717;
+    }
+
+    /* Dark Mode Node Content */
+    :host-context(html.dark) .node-name {
+      color: #FFFFFF;
+    }
+
+    :host-context(html.dark) .node-title {
+      color: #9CA3AF;
+    }
+
+    :host-context(html.dark) .team-count {
+      background: #262626;
+      color: #9CA3AF;
+    }
+
+    /* Dark Mode Team Container */
+    :host-context(html.dark) .team-container {
+      background: #1F1F1F;
+      border-color: #404040;
+    }
+
+    :host-context(html.dark) .team-purple {
+      border-color: rgba(91, 33, 182, 0.5);
+      background: linear-gradient(180deg, rgba(91, 33, 182, 0.15) 0%, #1F1F1F 100%);
+    }
+    :host-context(html.dark) .team-teal {
+      border-color: rgba(15, 118, 110, 0.5);
+      background: linear-gradient(180deg, rgba(15, 118, 110, 0.15) 0%, #1F1F1F 100%);
+    }
+    :host-context(html.dark) .team-blue {
+      border-color: rgba(29, 78, 216, 0.5);
+      background: linear-gradient(180deg, rgba(29, 78, 216, 0.15) 0%, #1F1F1F 100%);
+    }
+    :host-context(html.dark) .team-orange {
+      border-color: rgba(194, 65, 12, 0.5);
+      background: linear-gradient(180deg, rgba(194, 65, 12, 0.15) 0%, #1F1F1F 100%);
+    }
+    :host-context(html.dark) .team-pink {
+      border-color: rgba(190, 24, 93, 0.5);
+      background: linear-gradient(180deg, rgba(190, 24, 93, 0.15) 0%, #1F1F1F 100%);
+    }
+
+    /* Dark Mode Member Node */
+    :host-context(html.dark) .member-node {
+      background: #171717;
+      border-color: #404040;
+    }
+
+    :host-context(html.dark) .member-node:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    :host-context(html.dark) .member-purple:hover { border-color: #7C3AED; }
+    :host-context(html.dark) .member-teal:hover { border-color: #14B8A6; }
+    :host-context(html.dark) .member-blue:hover { border-color: #3B82F6; }
+    :host-context(html.dark) .member-orange:hover { border-color: #F97316; }
+    :host-context(html.dark) .member-pink:hover { border-color: #EC4899; }
+
+    :host-context(html.dark) .member-name {
+      color: #FFFFFF;
+    }
+
+    :host-context(html.dark) .member-title {
+      color: #9CA3AF;
+    }
+
+    /* Dark Mode Summary Cards */
+    :host-context(html.dark) .summary-card {
+      background: #171717;
+      border-color: #404040;
+    }
+
+    :host-context(html.dark) .summary-card:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    :host-context(html.dark) .summary-title {
+      color: #FFFFFF;
+    }
+
+    :host-context(html.dark) .summary-count {
+      color: #9CA3AF;
+    }
+
+    /* Dark Mode Icon backgrounds */
+    :host-context(html.dark) .icon-purple { background: rgba(124, 58, 237, 0.2); color: #C084FC; }
+    :host-context(html.dark) .icon-teal { background: rgba(20, 184, 166, 0.2); color: #2DD4BF; }
+    :host-context(html.dark) .icon-blue { background: rgba(59, 130, 246, 0.2); color: #60A5FA; }
+    :host-context(html.dark) .icon-orange { background: rgba(249, 115, 22, 0.2); color: #FB923C; }
+    :host-context(html.dark) .icon-pink { background: rgba(236, 72, 153, 0.2); color: #F472B6; }
+
+    /* Dark Mode Mobile Department Headers */
+    :host-context(html.dark) .dept-header.bg-purple-50 { background-color: rgba(91, 33, 182, 0.2) !important; }
+    :host-context(html.dark) .dept-header.bg-teal-50 { background-color: rgba(15, 118, 110, 0.2) !important; }
+    :host-context(html.dark) .dept-header.bg-blue-50 { background-color: rgba(29, 78, 216, 0.2) !important; }
+    :host-context(html.dark) .dept-header.bg-orange-50 { background-color: rgba(194, 65, 12, 0.2) !important; }
+    :host-context(html.dark) .dept-header.bg-pink-50 { background-color: rgba(190, 24, 93, 0.2) !important; }
   `]
 })
 export class OrgChartComponent implements OnInit {

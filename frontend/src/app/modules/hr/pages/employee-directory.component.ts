@@ -16,7 +16,7 @@ import { Employee, Department } from '../../../core/models';
       <div class="page-header">
         <div>
           <h1 class="page-title">{{ lang.currentLanguage() === 'ar' ? 'دليل الموظفين' : 'Employee Directory' }}</h1>
-          <p class="text-sm text-slate-500 mt-1">
+          <p class="text-sm text-slate-500 dark:text-gray-400 mt-1">
             {{ lang.currentLanguage() === 'ar' ? 'إدارة وعرض جميع الموظفين' : 'Manage and view all employees' }}
           </p>
         </div>
@@ -82,28 +82,28 @@ import { Employee, Department } from '../../../core/models';
         <!-- Mobile Card View -->
         <div class="md:hidden">
           @for (employee of filteredEmployees(); track employee.id) {
-            <div class="p-3 sm:p-4 border-b border-gray-100 last:border-b-0" (click)="viewEmployee(employee)">
+            <div class="p-3 sm:p-4 border-b border-gray-100 dark:border-surface-800 last:border-b-0" (click)="viewEmployee(employee)">
               <div class="flex items-start gap-2 sm:gap-3">
-                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-semibold text-xs sm:text-sm shrink-0">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 flex items-center justify-center font-semibold text-xs sm:text-sm shrink-0">
                   {{ getInitials(employee) }}
                 </div>
                 <div class="flex-1 min-w-0">
                   <div class="flex items-start justify-between gap-1 sm:gap-2">
                     <div class="min-w-0 flex-1">
-                      <div class="font-medium text-slate-900 text-sm sm:text-base truncate">
+                      <div class="font-medium text-slate-900 dark:text-white text-sm sm:text-base truncate">
                         {{ lang.currentLanguage() === 'ar' && employee.firstNameAr
                           ? employee.firstNameAr + ' ' + (employee.lastNameAr || '')
                           : employee.firstName + ' ' + employee.lastName }}
                       </div>
-                      <div class="text-xs sm:text-sm text-slate-500 truncate">{{ employee.workEmail }}</div>
+                      <div class="text-xs sm:text-sm text-slate-500 dark:text-gray-400 truncate">{{ employee.workEmail }}</div>
                     </div>
                     <span class="badge shrink-0" [class]="getStatusBadgeClass(employee.status)">
                       {{ getStatusLabel(employee.status) }}
                     </span>
                   </div>
-                  <div class="mt-1.5 sm:mt-2 flex flex-wrap gap-x-2 sm:gap-x-4 gap-y-0.5 text-xs sm:text-sm text-slate-600">
+                  <div class="mt-1.5 sm:mt-2 flex flex-wrap gap-x-2 sm:gap-x-4 gap-y-0.5 text-xs sm:text-sm text-slate-600 dark:text-gray-400">
                     <span class="truncate">{{ lang.currentLanguage() === 'ar' ? employee.departmentNameAr : employee.departmentName }}</span>
-                    <span class="text-slate-400 hidden sm:inline">•</span>
+                    <span class="text-slate-400 dark:text-gray-500 hidden sm:inline">•</span>
                     <span class="truncate">{{ lang.currentLanguage() === 'ar' ? employee.positionTitleAr : employee.positionTitle }}</span>
                   </div>
                   <div class="mt-2 sm:mt-3 flex items-center gap-2">
@@ -128,11 +128,11 @@ import { Employee, Department } from '../../../core/models';
             </div>
           } @empty {
             <div class="text-center py-12">
-              <div class="text-slate-400">
+              <div class="text-slate-400 dark:text-gray-500">
                 <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <p class="text-lg font-medium">{{ lang.currentLanguage() === 'ar' ? 'لا توجد نتائج' : 'No results found' }}</p>
+                <p class="text-lg font-medium dark:text-gray-400">{{ lang.currentLanguage() === 'ar' ? 'لا توجد نتائج' : 'No results found' }}</p>
                 <p class="text-sm mt-1">{{ lang.currentLanguage() === 'ar' ? 'حاول تغيير معايير البحث' : 'Try changing your search criteria' }}</p>
               </div>
             </div>
@@ -168,31 +168,31 @@ import { Employee, Department } from '../../../core/models';
                   </td>
                   <td>
                     <div class="flex items-center gap-3">
-                      <div class="w-10 h-10 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-semibold text-sm">
+                      <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 flex items-center justify-center font-semibold text-sm">
                         {{ getInitials(employee) }}
                       </div>
                       <div>
-                        <div class="font-medium text-slate-900">
+                        <div class="font-medium text-slate-900 dark:text-white">
                           {{ lang.currentLanguage() === 'ar' && employee.firstNameAr
                             ? employee.firstNameAr + ' ' + (employee.lastNameAr || '')
                             : employee.firstName + ' ' + employee.lastName }}
                         </div>
-                        <div class="text-sm text-slate-500">{{ employee.workEmail }}</div>
+                        <div class="text-sm text-slate-500 dark:text-gray-400">{{ employee.workEmail }}</div>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <span class="text-slate-700">
+                    <span class="text-slate-700 dark:text-gray-300">
                       {{ lang.currentLanguage() === 'ar' ? employee.departmentNameAr : employee.departmentName }}
                     </span>
                   </td>
                   <td>
-                    <span class="text-slate-700">
+                    <span class="text-slate-700 dark:text-gray-300">
                       {{ lang.currentLanguage() === 'ar' ? employee.positionTitleAr : employee.positionTitle }}
                     </span>
                   </td>
                   <td>
-                    <span class="text-slate-600">{{ lang.formatDate(employee.joinDate) }}</span>
+                    <span class="text-slate-600 dark:text-gray-400">{{ lang.formatDate(employee.joinDate) }}</span>
                   </td>
                   <td>
                     <span class="badge" [class]="getStatusBadgeClass(employee.status)">
@@ -202,7 +202,7 @@ import { Employee, Department } from '../../../core/models';
                   <td (click)="$event.stopPropagation()">
                     <div class="flex items-center gap-1">
                       <button
-                        class="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded"
+                        class="p-1.5 text-slate-400 dark:text-gray-500 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-700 rounded"
                         [routerLink]="['/hr/employees', employee.id]"
                         [title]="lang.currentLanguage() === 'ar' ? 'عرض' : 'View'"
                       >
@@ -212,7 +212,7 @@ import { Employee, Department } from '../../../core/models';
                         </svg>
                       </button>
                       <button
-                        class="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded"
+                        class="p-1.5 text-slate-400 dark:text-gray-500 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-700 rounded"
                         (click)="editEmployee(employee)"
                         [title]="lang.currentLanguage() === 'ar' ? 'تعديل' : 'Edit'"
                       >
@@ -221,7 +221,7 @@ import { Employee, Department } from '../../../core/models';
                         </svg>
                       </button>
                       <button
-                        class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded"
+                        class="p-1.5 text-slate-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded"
                         (click)="deleteEmployee(employee)"
                         [title]="lang.currentLanguage() === 'ar' ? 'حذف' : 'Delete'"
                       >
@@ -235,11 +235,11 @@ import { Employee, Department } from '../../../core/models';
               } @empty {
                 <tr>
                   <td colspan="7" class="text-center py-12">
-                    <div class="text-slate-400">
+                    <div class="text-slate-400 dark:text-gray-500">
                       <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
-                      <p class="text-lg font-medium">{{ lang.currentLanguage() === 'ar' ? 'لا توجد نتائج' : 'No results found' }}</p>
+                      <p class="text-lg font-medium dark:text-gray-400">{{ lang.currentLanguage() === 'ar' ? 'لا توجد نتائج' : 'No results found' }}</p>
                       <p class="text-sm mt-1">{{ lang.currentLanguage() === 'ar' ? 'حاول تغيير معايير البحث' : 'Try changing your search criteria' }}</p>
                     </div>
                   </td>
@@ -250,8 +250,8 @@ import { Employee, Department } from '../../../core/models';
         </div>
 
         <!-- Pagination -->
-        <div class="px-4 py-3 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div class="text-sm text-slate-500 text-center sm:text-start">
+        <div class="px-4 py-3 border-t border-slate-200 dark:border-surface-700 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="text-sm text-slate-500 dark:text-gray-400 text-center sm:text-start">
             {{ lang.currentLanguage() === 'ar' ? 'عرض' : 'Showing' }}
             <span class="font-medium">1-{{ Math.min(filteredEmployees().length, 10) }}</span>
             {{ lang.currentLanguage() === 'ar' ? 'من' : 'of' }}
@@ -280,11 +280,11 @@ import { Employee, Department } from '../../../core/models';
         <div class="fixed inset-0 z-50 overflow-y-auto">
           <div class="flex min-h-full items-center justify-center p-4">
             <div class="modal-content w-full max-w-2xl" (click)="$event.stopPropagation()">
-              <div class="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-200">
-                <h3 class="text-lg font-semibold text-slate-900">
+              <div class="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-200 dark:border-surface-700">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
                   {{ lang.currentLanguage() === 'ar' ? 'إضافة موظف جديد' : 'Add New Employee' }}
                 </h3>
-                <button (click)="showAddModal = false" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg">
+                <button (click)="showAddModal = false" class="p-2 text-slate-400 dark:text-gray-500 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-700 rounded-lg">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
@@ -348,7 +348,7 @@ import { Employee, Department } from '../../../core/models';
                   </div>
                 </div>
               </div>
-              <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3 px-4 sm:px-6 py-4 border-t border-slate-200 bg-slate-50">
+              <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3 px-4 sm:px-6 py-4 border-t border-slate-200 dark:border-surface-700 bg-slate-50 dark:bg-surface-800">
                 <button class="btn btn-secondary w-full sm:w-auto" (click)="showAddModal = false">
                   {{ lang.currentLanguage() === 'ar' ? 'إلغاء' : 'Cancel' }}
                 </button>

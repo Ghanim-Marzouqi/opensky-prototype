@@ -33,6 +33,7 @@ module.exports = {
           700: '#0F766E',
           800: '#115E59',
           900: '#134E4A',
+          950: '#042F2E',
         },
         // Surface colors for backgrounds
         surface: {
@@ -56,6 +57,9 @@ module.exports = {
           400: '#4ADE80',
           500: '#22C55E',
           600: '#16A34A',
+          700: '#15803D',
+          800: '#166534',
+          900: '#14532D',
         },
         warning: {
           50: '#FFFBEB',
@@ -63,6 +67,9 @@ module.exports = {
           400: '#FBBF24',
           500: '#F59E0B',
           600: '#D97706',
+          700: '#B45309',
+          800: '#92400E',
+          900: '#78350F',
         },
         danger: {
           50: '#FEF2F2',
@@ -70,6 +77,9 @@ module.exports = {
           400: '#F87171',
           500: '#EF4444',
           600: '#DC2626',
+          700: '#B91C1C',
+          800: '#991B1B',
+          900: '#7F1D1D',
         },
         // Priority colors (Prodify-style)
         coral: {

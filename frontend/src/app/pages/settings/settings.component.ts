@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LanguageService } from '../../core/services/language.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroCog6Tooth,
@@ -112,9 +113,9 @@ interface SettingOption {
                 <div class="text-xs text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'منطقتك الزمنية الحالية' : 'Your current timezone' }}</div>
               </div>
               <select class="form-select w-auto py-2 text-sm">
-                <option value="asia/dubai">{{ lang.currentLanguage() === 'ar' ? 'دبي (GMT+4)' : 'Dubai (GMT+4)' }}</option>
+                <option value="asia/muscat">{{ lang.currentLanguage() === 'ar' ? 'مسقط (GMT+4)' : 'Muscat (GMT+4)' }}</option>
                 <option value="asia/riyadh">{{ lang.currentLanguage() === 'ar' ? 'الرياض (GMT+3)' : 'Riyadh (GMT+3)' }}</option>
-                <option value="europe/london">{{ lang.currentLanguage() === 'ar' ? 'لندن (GMT+0)' : 'London (GMT+0)' }}</option>
+                <option value="asia/dubai">{{ lang.currentLanguage() === 'ar' ? 'دبي (GMT+4)' : 'Dubai (GMT+4)' }}</option>
               </select>
             </div>
           </div>
@@ -179,17 +180,41 @@ interface SettingOption {
             </div>
           </div>
 
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-surface-800 rounded-xl">
             <div>
-              <div class="text-sm font-medium text-gray-900">{{ lang.currentLanguage() === 'ar' ? 'الوضع' : 'Theme' }}</div>
-              <div class="text-xs text-gray-500">{{ lang.currentLanguage() === 'ar' ? 'اختر المظهر المفضل' : 'Choose your preferred theme' }}</div>
+              <div class="text-sm font-medium text-gray-900 dark:text-white">{{ lang.currentLanguage() === 'ar' ? 'الوضع' : 'Theme' }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ lang.currentLanguage() === 'ar' ? 'اختر المظهر المفضل' : 'Choose your preferred theme' }}</div>
             </div>
             <div class="flex gap-2">
-              <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary-600 text-white rounded-lg">
+              <button
+                (click)="theme.setTheme('light')"
+                class="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all"
+                [class.bg-primary-600]="theme.currentTheme() === 'light'"
+                [class.text-white]="theme.currentTheme() === 'light'"
+                [class.bg-white]="theme.currentTheme() !== 'light'"
+                [class.dark:bg-surface-700]="theme.currentTheme() !== 'light'"
+                [class.text-gray-700]="theme.currentTheme() !== 'light'"
+                [class.dark:text-gray-300]="theme.currentTheme() !== 'light'"
+                [class.border]="theme.currentTheme() !== 'light'"
+                [class.border-gray-200]="theme.currentTheme() !== 'light'"
+                [class.dark:border-surface-600]="theme.currentTheme() !== 'light'"
+              >
                 <ng-icon name="heroSun" class="text-sm"></ng-icon>
                 {{ lang.currentLanguage() === 'ar' ? 'فاتح' : 'Light' }}
               </button>
-              <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50">
+              <button
+                (click)="theme.setTheme('dark')"
+                class="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all"
+                [class.bg-primary-600]="theme.currentTheme() === 'dark'"
+                [class.text-white]="theme.currentTheme() === 'dark'"
+                [class.bg-white]="theme.currentTheme() !== 'dark'"
+                [class.dark:bg-surface-700]="theme.currentTheme() !== 'dark'"
+                [class.text-gray-700]="theme.currentTheme() !== 'dark'"
+                [class.dark:text-gray-300]="theme.currentTheme() !== 'dark'"
+                [class.border]="theme.currentTheme() !== 'dark'"
+                [class.border-gray-200]="theme.currentTheme() !== 'dark'"
+                [class.dark:border-surface-600]="theme.currentTheme() !== 'dark'"
+              >
                 <ng-icon name="heroMoon" class="text-sm"></ng-icon>
                 {{ lang.currentLanguage() === 'ar' ? 'داكن' : 'Dark' }}
               </button>
@@ -249,6 +274,7 @@ interface SettingOption {
 })
 export class SettingsComponent {
   lang = inject(LanguageService);
+  theme = inject(ThemeService);
 
   notificationOptions = signal<SettingOption[]>([
     {

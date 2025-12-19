@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { LanguageService } from '../core/services/language.service';
 import { AuthService } from '../core/services/auth.service';
+import { ThemeService } from '../core/services/theme.service';
 import { filter } from 'rxjs/operators';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
@@ -95,7 +96,7 @@ interface NavItem {
     })
   ],
   template: `
-    <div class="flex h-screen overflow-hidden bg-gray-50" [dir]="lang.direction()">
+    <div class="flex h-screen overflow-hidden bg-gray-50 dark:bg-surface-950" [dir]="lang.direction()">
       <!-- Mobile Overlay -->
       @if (mobileMenuOpen()) {
         <div
@@ -115,21 +116,20 @@ interface NavItem {
         [class.lg:translate-x-0]="true"
       >
         <!-- User Profile at Top -->
-        <div class="p-4 border-b border-gray-100">
+        <div class="p-4 border-b border-gray-200 dark:border-surface-800">
           <div class="flex items-center gap-3">
             <div class="avatar w-10 h-10 text-sm">{{ userInitials() }}</div>
             @if (!sidebarCollapsed()) {
               <div class="flex-1 min-w-0">
-                <div class="text-sm font-semibold text-gray-900 truncate">
+                <div class="text-sm font-semibold text-gray-900 dark:text-white truncate">
                   {{ lang.currentLanguage() === 'ar' ? auth.user()?.nameAr : auth.user()?.name }}
                 </div>
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-gray-500 dark:text-gray-400">
                   {{ auth.userRole() === 'hr'
                     ? (lang.currentLanguage() === 'ar' ? 'الموارد البشرية' : 'HR Manager')
                     : (lang.currentLanguage() === 'ar' ? 'المالية' : 'Finance Manager') }}
                 </div>
               </div>
-              <ng-icon name="heroChevronDown" class="text-gray-400 text-sm cursor-pointer hover:text-gray-600"></ng-icon>
             }
           </div>
         </div>
@@ -143,7 +143,7 @@ interface NavItem {
                 {{ lang.currentLanguage() === 'ar' ? section.labelAr : section.labelEn }}
               </div>
             } @else {
-              <div class="my-3 border-t border-gray-100"></div>
+              <div class="my-3 border-t border-gray-200 dark:border-surface-800"></div>
             }
 
             @for (item of section.items; track item.id) {
@@ -160,14 +160,14 @@ interface NavItem {
                     <span class="flex-1 text-start">{{ lang.currentLanguage() === 'ar' ? item.labelAr : item.labelEn }}</span>
                     <ng-icon
                       [name]="item.expanded ? 'heroChevronDown' : 'heroChevronRight'"
-                      class="text-sm transition-transform"
+                      class="text-sm transition-transform flip-rtl"
                     ></ng-icon>
                   }
                 </button>
 
                 <!-- Child Items -->
                 @if (item.expanded && !sidebarCollapsed()) {
-                  <div class="ms-3 mb-2 ps-3 border-s border-gray-200">
+                  <div class="ms-3 mb-2 ps-3 border-s border-gray-300 dark:border-surface-700">
                     @for (child of item.children; track child.id) {
                       <a
                         [routerLink]="child.route"
@@ -200,19 +200,8 @@ interface NavItem {
           }
         </nav>
 
-        <!-- Settings at Bottom - Prodify Style -->
-        <div class="border-t border-gray-100 p-3">
-          <a
-            routerLink="/settings"
-            routerLinkActive="active"
-            class="w-full nav-item mb-2"
-            [class.justify-center]="sidebarCollapsed()"
-          >
-            <ng-icon name="heroCog6Tooth" class="text-xl"></ng-icon>
-            @if (!sidebarCollapsed()) {
-              <span>{{ lang.currentLanguage() === 'ar' ? 'الإعدادات' : 'Settings' }}</span>
-            }
-          </a>
+        <!-- Collapse Toggle at Bottom -->
+        <div class="border-t border-gray-200 dark:border-surface-800 p-3">
           <button
             (click)="toggleSidebar()"
             class="w-full nav-item justify-center py-2"
@@ -233,7 +222,7 @@ interface NavItem {
       >
         <!-- Header - Clean Prodify Style -->
         <header
-          class="fixed top-0 left-0 right-0 z-20 h-14 bg-white border-b border-gray-100 flex items-center px-4 sm:px-6 gap-2 sm:gap-4 transition-all duration-300"
+          class="fixed top-0 left-0 right-0 z-20 h-14 bg-white dark:bg-surface-900 border-b border-gray-200 dark:border-surface-800 flex items-center px-4 sm:px-6 gap-2 sm:gap-4 transition-all duration-300"
           [class.lg:left-64]="!sidebarCollapsed() && lang.direction() === 'ltr'"
           [class.lg:left-20]="sidebarCollapsed() && lang.direction() === 'ltr'"
           [class.lg:right-64]="!sidebarCollapsed() && lang.direction() === 'rtl'"
@@ -242,13 +231,13 @@ interface NavItem {
           <!-- Mobile Menu Toggle -->
           <button
             (click)="toggleMobileMenu()"
-            class="lg:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-xl"
+            class="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-surface-800 rounded-xl"
           >
             <ng-icon name="heroBars3" class="text-xl"></ng-icon>
           </button>
 
           <!-- Date Display - Prodify Style -->
-          <div class="hidden md:flex items-center gap-2 text-sm text-gray-500">
+          <div class="hidden md:flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
             <ng-icon name="heroCalendar" class="text-lg"></ng-icon>
             <span>{{ currentDate }}</span>
           </div>
@@ -263,7 +252,7 @@ interface NavItem {
               <input
                 type="text"
                 [placeholder]="lang.currentLanguage() === 'ar' ? 'بحث...' : 'Search...'"
-                class="w-40 lg:w-48 h-10 ps-10 pe-4 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 focus:bg-white transition-all"
+                class="w-40 lg:w-48 h-10 ps-10 pe-4 text-sm bg-gray-50 dark:bg-surface-800 border border-gray-200 dark:border-surface-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 focus:bg-white dark:focus:bg-surface-700 dark:text-white dark:placeholder:text-gray-500 transition-all"
               />
               <ng-icon name="heroMagnifyingGlass" class="absolute start-3 top-2.5 text-gray-400"></ng-icon>
             </div>
@@ -271,14 +260,14 @@ interface NavItem {
             <!-- Language Toggle -->
             <button
               (click)="lang.toggleLanguage()"
-              class="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all"
+              class="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 rounded-xl transition-all"
             >
               <ng-icon name="heroGlobeAlt" class="text-lg"></ng-icon>
               <span class="hidden sm:inline">{{ lang.currentLanguage() === 'ar' ? 'EN' : 'AR' }}</span>
             </button>
 
             <!-- Notifications -->
-            <button class="relative p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-all">
+            <button class="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-surface-800 rounded-xl transition-all">
               <ng-icon name="heroBell" class="text-xl"></ng-icon>
               <span class="absolute top-1.5 end-1.5 w-2 h-2 bg-coral-500 rounded-full ring-2 ring-white"></span>
             </button>
@@ -287,29 +276,29 @@ interface NavItem {
             <div class="relative ms-1">
               <button
                 (click)="toggleUserMenu()"
-                class="flex items-center gap-2 p-1.5 hover:bg-gray-100 rounded-xl transition-all"
+                class="flex items-center gap-2 p-1.5 hover:bg-gray-100 dark:hover:bg-surface-800 rounded-xl transition-all"
               >
                 <div class="avatar w-8 h-8 text-xs">{{ userInitials() }}</div>
                 <ng-icon name="heroChevronDown" class="text-gray-400 text-sm hidden sm:block"></ng-icon>
               </button>
 
               @if (userMenuOpen()) {
-                <div class="absolute end-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
-                  <div class="px-4 py-3 border-b border-gray-100">
-                    <div class="text-sm font-semibold text-gray-900">
+                <div class="absolute end-0 mt-2 w-56 bg-white dark:bg-surface-900 rounded-xl shadow-lg border border-gray-200 dark:border-surface-800 py-2 z-50">
+                  <div class="px-4 py-3 border-b border-gray-200 dark:border-surface-800">
+                    <div class="text-sm font-semibold text-gray-900 dark:text-white">
                       {{ lang.currentLanguage() === 'ar' ? auth.user()?.nameAr : auth.user()?.name }}
                     </div>
-                    <div class="text-xs text-gray-500">{{ auth.user()?.email }}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ auth.user()?.email }}</div>
                   </div>
-                  <a routerLink="/profile" (click)="userMenuOpen.set(false)" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                    <ng-icon name="heroIdentification" class="text-lg text-gray-400"></ng-icon>
+                  <a routerLink="/profile" (click)="userMenuOpen.set(false)" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-surface-800 transition-colors">
+                    <ng-icon name="heroIdentification" class="text-lg text-gray-500"></ng-icon>
                     {{ lang.currentLanguage() === 'ar' ? 'ملفي الشخصي' : 'My Profile' }}
                   </a>
-                  <a routerLink="/settings" (click)="userMenuOpen.set(false)" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                    <ng-icon name="heroCog6Tooth" class="text-lg text-gray-400"></ng-icon>
+                  <a routerLink="/settings" (click)="userMenuOpen.set(false)" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-surface-800 transition-colors">
+                    <ng-icon name="heroCog6Tooth" class="text-lg text-gray-500"></ng-icon>
                     {{ lang.currentLanguage() === 'ar' ? 'الإعدادات' : 'Settings' }}
                   </a>
-                  <div class="border-t border-gray-100 my-1"></div>
+                  <div class="border-t border-gray-200 dark:border-surface-800 my-1"></div>
                   <button
                     (click)="logout()"
                     class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-danger-600 hover:bg-danger-50 transition-colors"
@@ -324,7 +313,7 @@ interface NavItem {
         </header>
 
         <!-- Page Content - Light Background -->
-        <main class="flex-1 overflow-auto p-4 sm:p-6 mt-14" style="background-color: #F7F8FA;">
+        <main class="flex-1 overflow-auto p-4 sm:p-6 mt-14 bg-gray-50 dark:bg-surface-950">
           <router-outlet></router-outlet>
         </main>
       </div>
@@ -340,6 +329,7 @@ interface NavItem {
 export class LayoutComponent {
   lang = inject(LanguageService);
   auth = inject(AuthService);
+  theme = inject(ThemeService);
   private router = inject(Router);
 
   sidebarCollapsed = signal(false);
